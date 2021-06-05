@@ -19,4 +19,8 @@
     <string name="username">Username</string>
     <string name="create_account">CREATE ACCOUNT</string>
     <string name="sign_in">sign In</string>
+    <string name="azan">Azan</string>
+    <string name="silent">Silent</string>
+    <string name="faizal_tahir">Faizal Tahir</string>
+    <string name="settings">Settings</string>
 </resources>

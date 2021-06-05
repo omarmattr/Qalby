@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.button.MaterialButton app:cornerRadius="@dimen/_4sdp"
+    app:elevation="@dimen/_4sdp"
+    android:id="@+id/dua_button"
+    android:layout_width="@dimen/_100sdp"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/white"
+    android:drawableTop="@drawable/ic_launcher_background"
+    android:drawablePadding="-15sp"
+    android:paddingTop="@dimen/_16ssp"
+    android:text="@string/dua"
+    android:layout_margin="@dimen/_8sdp"
+    android:textColor="@color/text"
+    android:textSize="@dimen/_10ssp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />
