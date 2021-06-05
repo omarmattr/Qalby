@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Qalby</string>
+    <string name="bulletin">Bulletin</string>
+    <string name="solah">Solah</string>
+    <string name="home">Home</string>
+    <string name="dua">Dua</string>
+    <string name="more">More</string>
+    <string name="next_prayer">Next prayer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

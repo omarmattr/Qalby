@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation.xml"
+    app:startDestination="@id/destination_home">
+
+    <fragment
+        android:id="@+id/destination_home"
+        android:name="com.ps.omarmattr.qalby.ui.fragment.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home"/>
+    <fragment
+        android:id="@+id/destination_dua"
+        android:name="com.ps.omarmattr.qalby.ui.fragment.DuaFragment"
+        android:label="DuaFragment"
+        tools:layout="@layout/fragment_dua"/>
+    <fragment
+        android:id="@+id/destination_solah"
+        android:name="com.ps.omarmattr.qalby.ui.fragment.SolahFragment"
+        android:label="DuaFragment"
+        tools:layout="@layout/fragment_solah"/>
+</navigation>

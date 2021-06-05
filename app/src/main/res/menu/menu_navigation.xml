@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/destination_bulletin"
+        android:icon="@drawable/selector_bulletin"
+        android:title="@string/bulletin" />
+
+    <item
+        android:id="@+id/destination_solah"
+        android:icon="@drawable/selector_solah"
+        android:title="@string/solah" />
+
+    <item
+        android:id="@+id/destination_home"
+        android:icon="@drawable/selector_home"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/destination_dua"
+        android:icon="@drawable/selector_dua"
+        android:title="@string/dua" />
+
+    <item
+        android:id="@+id/menu_more"
+        android:icon="@drawable/selector_more"
+        android:title="@string/more" />
+
+
+</menu>
