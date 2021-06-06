@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation.xml"
-    app:startDestination="@id/destination_home">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/destination_home"
@@ -20,4 +20,25 @@
         android:name="com.ps.omarmattr.qalby.ui.fragment.SolahFragment"
         android:label="DuaFragment"
         tools:layout="@layout/fragment_solah"/>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.ps.omarmattr.qalby.ui.fragment.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_destination_home"
+            app:destination="@id/destination_home" />
+    </fragment>
+    <dialog
+        android:id="@+id/destination_more"
+        android:name="com.ps.omarmattr.qalby.ui.dialog.MoreDialog"
+        android:label="MoreFragment"
+        tools:layout="@layout/dialog_more"
+        />
+    <fragment
+        android:id="@+id/destination_bulletin"
+        android:name="com.ps.omarmattr.qalby.ui.fragment.BulletinFragment"
+        android:label="fragment_bulletin"
+        tools:layout="@layout/fragment_bulletin"
+        />
 </navigation>

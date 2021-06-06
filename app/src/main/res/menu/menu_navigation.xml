@@ -23,7 +23,7 @@
         android:title="@string/dua" />
 
     <item
-        android:id="@+id/menu_more"
+        android:id="@+id/destination_more"
         android:icon="@drawable/selector_more"
         android:title="@string/more" />
 

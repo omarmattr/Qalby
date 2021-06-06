@@ -60,7 +60,7 @@
                                 android:layout_marginHorizontal="@dimen/_8sdp"
                                 android:layout_marginTop="?actionBarSize"
                                 android:layout_marginBottom="@dimen/_16sdp"
-                                android:src="@drawable/ic_launcher_background"
+                                android:src="@drawable/avatar"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -69,21 +69,22 @@
                                 android:id="@+id/textView"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="@string/app_name"
+                                tools:text="omarmattr"
+                                android:layout_marginHorizontal="@dimen/_8sdp"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/roundedImageView"
                                 app:layout_constraintTop_toTopOf="@+id/roundedImageView" />
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/app_name"
+                                tools:text="gaza"
+                                android:layout_marginHorizontal="@dimen/_8sdp"
+                                android:textSize="@dimen/_12ssp"
                                 android:textColor="@color/white"
-                                app:drawableStartCompat="@drawable/ic_dua"
-                                app:drawableTint="@color/white"
+                                app:drawableStartCompat="@drawable/ic_location"
                                 app:layout_constraintBottom_toBottomOf="@+id/roundedImageView"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/roundedImageView" />
 
 

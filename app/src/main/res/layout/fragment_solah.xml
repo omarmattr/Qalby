@@ -18,6 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:src="@drawable/ic_setting"
+            android:background="null"
             android:layout_margin="@dimen/_16sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -95,6 +97,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_16sdp"
+                    android:background="null"
+                    android:src="@drawable/ic_left_arrow"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
                 <TextView
@@ -102,13 +106,15 @@
                     android:layout_weight="12"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="May 2021"
+                    tools:text="May 2021"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_20ssp" />
                 <ImageButton
                     android:layout_weight="1"
+                    android:background="null"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/ic_right_arrow"
                     android:layout_margin="@dimen/_16sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

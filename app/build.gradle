@@ -88,10 +88,16 @@ dependencies {
 
     //ViewPager2
     implementation 'com.tbuonomo:dotsindicator:4.2'
+    
     // loading dialog
     implementation 'com.wang.avi:library:2.1.3'
+
     //sdp
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     //ssp
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
+
+    //lottie
+    implementation "com.airbnb.android:lottie:3.7.0"
+
 }

@@ -30,10 +30,11 @@
                 <ImageView
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:id="@+id/icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:src="@drawable/ic_cloud"
                     android:contentDescription="@null"
-                    app:tint="@color/black" />
+                   />
 
                 <TextView
                     android:id="@+id/name"
@@ -62,12 +63,11 @@
                     android:textColor="@color/black"
                     tool:text="15:30" />
 
-                <ImageView
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:checked="true"
                     android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:id="@+id/sound"
-                    android:layout_width="17dp"
-                    android:layout_height="15dp"
-                    android:contentDescription="@null" />
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
