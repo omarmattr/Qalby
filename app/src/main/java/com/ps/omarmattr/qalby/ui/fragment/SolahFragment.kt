@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.databinding.FragmentSolahBinding
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
-
+@AndroidEntryPoint
 class SolahFragment : Fragment() {
 
     private val mBinding by lazy{
