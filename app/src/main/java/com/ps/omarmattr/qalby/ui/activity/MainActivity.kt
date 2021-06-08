@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.EasyWayLocation.LOCATION_SETTING_REQUEST_CODE
+import com.example.easywaylocation.GetLocationDetail
 import com.example.easywaylocation.Listener
 import com.google.android.gms.location.LocationRequest
 import com.karumi.dexter.Dexter
@@ -26,7 +27,9 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.databinding.ActivityMainBinding
+import com.ps.omarmattr.qalby.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @Suppress("DEPRECATION")
@@ -35,6 +38,9 @@ class MainActivity : AppCompatActivity(), Listener {
     private var navHostFragment: Fragment? = null
     private lateinit var mBinding: ActivityMainBinding
     var easyWayLocation: EasyWayLocation? = null
+    @Inject
+    lateinit var viewModel:MainViewModel
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,12 +106,8 @@ class MainActivity : AppCompatActivity(), Listener {
     }
 
     override fun currentLocation(location: Location) {
-        Toast.makeText(
-            this,
-            "Location ${location.longitude}  ${location.longitude}",
-            Toast.LENGTH_SHORT
-        ).show()
 
+        viewModel.getLocation(location.latitude,location.longitude)
     }
 
     override fun locationCancelled() {
@@ -126,21 +128,23 @@ class MainActivity : AppCompatActivity(), Listener {
             .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
             .withListener(object : PermissionListener {
                 override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-                    Log.e("ooooooo","onPermissionGranted")
+                    Log.e("ooooooo", "onPermissionGranted")
 
 
                 }
 
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                   if (p0!!.isPermanentlyDenied) Log.e("ooooooo","onPermissionDenied")
+                    if (p0!!.isPermanentlyDenied) Log.e("ooooooo", "onPermissionDenied")
 
                     LocationRequest.create().apply {
                         interval = 10000
                         priority = LocationRequest.PRIORITY_LOW_POWER
                     }.also {
                         easyWayLocation =
-                            EasyWayLocation(this@MainActivity, it, true,
-                                false, this@MainActivity)
+                            EasyWayLocation(
+                                this@MainActivity, it, true,
+                                false, this@MainActivity
+                            )
                     }
                     easyWayLocation!!.startLocation()
                 }
@@ -149,7 +153,7 @@ class MainActivity : AppCompatActivity(), Listener {
                     p0: PermissionRequest?,
                     p1: PermissionToken?
                 ) {
-                    Log.e("ooooooo","onPermissionRationaleShouldBeShown")
+                    Log.e("ooooooo", "onPermissionRationaleShouldBeShown")
                     p1!!.continuePermissionRequest()
                 }
             }).withErrorListener {
@@ -160,6 +164,8 @@ class MainActivity : AppCompatActivity(), Listener {
                 ).show()
             }.onSameThread().check()
     }
+
+
 
 }
 

@@ -19,7 +19,11 @@
         android:id="@+id/destination_solah"
         android:name="com.ps.omarmattr.qalby.ui.fragment.SolahFragment"
         android:label="DuaFragment"
-        tools:layout="@layout/fragment_solah"/>
+        tools:layout="@layout/fragment_solah">
+        <action
+            android:id="@+id/action_destination_solah_to_settingSolahFragment"
+            app:destination="@id/settingSolahFragment" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.ps.omarmattr.qalby.ui.fragment.SplashFragment"
@@ -41,4 +45,9 @@
         android:label="fragment_bulletin"
         tools:layout="@layout/fragment_bulletin"
         />
+    <fragment
+        android:id="@+id/settingSolahFragment"
+        android:name="com.ps.omarmattr.qalby.ui.fragment.SettingSolahFragment"
+        android:label="SettingSolahFragment"
+        tools:layout="@layout/fragment_solah_setting"/>
 </navigation>

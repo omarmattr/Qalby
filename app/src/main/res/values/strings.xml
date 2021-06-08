@@ -23,4 +23,12 @@
     <string name="silent">Silent</string>
     <string name="faizal_tahir">Faizal Tahir</string>
     <string name="settings">Settings</string>
+    <string name="fajr">Fajr</string>
+    <string name="sunless">Settings</string>
+    <string name="dhuhr">Dhuhr</string>
+    <string name="asr">Asr</string>
+    <string name="imsak">Imsak</string>
+    <string name="isha">Isha</string>
+    <string name="maghrib">Maghrib</string>
+    <string name="sunset">Sunset</string>
 </resources>

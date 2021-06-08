@@ -4,13 +4,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable
+            name="solah"
+            type="com.ps.omarmattr.qalby.model.solahTime.SolahItem" />
 
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         app:cardCornerRadius="@dimen/_8sdp"
-        app:cardElevation="@dimen/_8sdp"
+        app:cardElevation="@dimen/_4sdp"
         android:layout_margin="@dimen/_8sdp"
         android:layout_height="@dimen/_40sdp">
 
@@ -25,7 +28,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tool:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_marginHorizontal="@dimen/_8sdp"
@@ -42,6 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
+                    android:text="@{solah.name}"
                     tool:text="Ashar"
 
                     />
@@ -61,11 +66,13 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/_14ssp"
                     android:textColor="@color/black"
+                    android:text="@{solah.time}"
+
                     tool:text="15:30" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
-                    android:checked="true"
+                    android:checked="@{solah.state}"
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:layout_height="wrap_content"/>
 
