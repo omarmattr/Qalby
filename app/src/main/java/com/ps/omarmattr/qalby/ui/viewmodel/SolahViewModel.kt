@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
+@Singleton
 @HiltViewModel
 class SolahViewModel @Inject constructor(
     application: Application,
