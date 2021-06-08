@@ -66,27 +66,41 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
+                                android:id="@+id/time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_35ssp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/roundedImageView"
+                                app:layout_constraintTop_toTopOf="@+id/roundedImageView"
+                                tools:text="00:05:45" />
+
+                            <TextView
                                 android:id="@+id/textView"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                tools:text="omarmattr"
                                 android:layout_marginHorizontal="@dimen/_8sdp"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/roundedImageView"
-                                app:layout_constraintTop_toTopOf="@+id/roundedImageView" />
+                                app:layout_constraintTop_toBottomOf="@+id/time"
+                                tools:text="omarmattr" />
 
                             <TextView
                                 android:id="@+id/txtLocation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                tools:text="gaza"
                                 android:layout_marginHorizontal="@dimen/_8sdp"
-                                android:textSize="@dimen/_12ssp"
+                                android:layout_marginStart="8dp"
                                 android:textColor="@color/white"
+                                android:textSize="@dimen/_12ssp"
                                 app:drawableStartCompat="@drawable/ic_location"
-                                app:layout_constraintBottom_toBottomOf="@+id/roundedImageView"
-                                app:layout_constraintStart_toEndOf="@+id/roundedImageView" />
+                                app:layout_constraintStart_toEndOf="@+id/roundedImageView"
+                                app:layout_constraintTop_toBottomOf="@+id/textView"
+                                tools:text="gaza" />
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -125,24 +139,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text=""
+                            android:text="dddddddd"
+                            android:layout_marginHorizontal="@dimen/_8sdp"
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/textView2"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/textView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="12313123"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/next_prayer_home"
-                            app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.appcompat.widget.Toolbar>
 
