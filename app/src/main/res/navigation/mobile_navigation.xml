@@ -14,7 +14,12 @@
         android:id="@+id/destination_dua"
         android:name="com.ps.omarmattr.qalby.ui.fragment.DuaFragment"
         android:label="DuaFragment"
-        tools:layout="@layout/fragment_dua"/>
+        tools:layout="@layout/fragment_dua">
+
+    </fragment>
+    <action
+        android:id="@+id/action_destination_dua_to_duaDetailsFragment"
+        app:destination="@id/duaDetailsFragment" />
     <fragment
         android:id="@+id/destination_solah"
         android:name="com.ps.omarmattr.qalby.ui.fragment.SolahFragment"
@@ -50,4 +55,8 @@
         android:name="com.ps.omarmattr.qalby.ui.fragment.SettingSolahFragment"
         android:label="SettingSolahFragment"
         tools:layout="@layout/fragment_solah_setting"/>
+    <fragment
+        android:id="@+id/duaDetailsFragment"
+        android:name="com.ps.omarmattr.qalby.ui.fragment.DuaDetailsFragment"
+        android:label="DuaDetailsFragment" />
 </navigation>

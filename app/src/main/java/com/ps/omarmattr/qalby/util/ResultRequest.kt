@@ -14,7 +14,7 @@ class ResultRequest<T> private constructor(val status: Status, val message: Stri
             return ResultRequest(Status.SUCCESS, message, data)
         }
 
-        fun <T> error(msg: String?, data: T): ResultRequest<T> {
+        fun <T> error(msg: String?, data: T?): ResultRequest<T> {
             return ResultRequest(Status.ERROR, msg, data)
         }
 

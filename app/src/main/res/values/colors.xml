@@ -3,7 +3,9 @@
 
     <color name="primary">#51EAFF</color>
     <color name="secondary">#E47CCD</color>
+    <color name="secondary_100">#AF4197</color>
     <color name="text">#58595B</color>
+    <color name="gary">#B8B8B8</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="icons">#202020</color>

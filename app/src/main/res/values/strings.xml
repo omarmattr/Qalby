@@ -31,4 +31,10 @@
     <string name="isha">Isha</string>
     <string name="maghrib">Maghrib</string>
     <string name="sunset">Sunset</string>
+    <string name="long_text">Glory be to Allah, and praise be to Him to the extent of the number of His creation and to the extent of His pleasure and to the extent of the weight of His Throne and to the extent of the ink of His words.(Recite thrice in the morning)</string>
+    <string name="long_text_ar">سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ عَدَدَ خَلْقِهِ وَرِضَا نَفْسِهِ وَزِنَةَ عَرْشِهِ وَمِدَادَ كَلِمَاتِهِ (3x)\n</string>
+
+    <string name="notification_channel_name">Music Channel</string>
+    <string name="notification_channel_description">Shows the currently playing music</string>
+
 </resources>
