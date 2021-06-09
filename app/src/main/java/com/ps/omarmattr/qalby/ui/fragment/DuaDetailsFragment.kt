@@ -107,9 +107,9 @@ class DuaDetailsFragment : Fragment(), GenericAdapter.OnListItemViewClickListene
                     mBinding.size.text = "${position + 1}/${mAdapter.data.size}"
 
 //                    if (curPlayingSong == null && dataList != null ) {
-                        curPlayingSong = dataList!![position]
-                        updateTitleAndSongImage(curPlayingSong!!)
-                        Log.e("Ttttttttt", "dasdfasdfasdf")
+                    curPlayingSong = dataList!![position]
+                    updateTitleAndSongImage(curPlayingSong!!)
+                    Log.e("Ttttttttt", "dasdfasdfasdf")
 //                    }
 
                 }
@@ -186,8 +186,10 @@ class DuaDetailsFragment : Fragment(), GenericAdapter.OnListItemViewClickListene
         }
         viewModel.curPlayerPosition.observe(viewLifecycleOwner) {
             if (shouldUpdateSeekbar) {
-                mBinding.seek.progress = it.toInt()
-                setCurPlayerTimeToTextView(it)
+                it?.let { pro ->
+                    mBinding.seek.progress = pro.toInt()
+                    setCurPlayerTimeToTextView(it)
+                }
             }
         }
         viewModel.curDuaDuration.observe(viewLifecycleOwner) {
