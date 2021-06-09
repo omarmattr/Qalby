@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.ps.omarmattr.qalby.BR
 import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.adapter.GenericAdapter
@@ -44,26 +45,12 @@ class ListDuaFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<D
         mAdapter.data = getListDua()
         mBinding.rcData.adapter = mAdapter
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.listDuaStateFlow.collect {
-                when (it.status) {
-                    ResultRequest.Status.EMPTY -> {
-                    }
-                    ResultRequest.Status.SUCCESS -> {
-                        val data = it.data
-                        Log.e("tttttttt", data.toString())
 
-                    }
-                    ResultRequest.Status.LOADING -> {
-                    }
-                    ResultRequest.Status.ERROR -> {
-                    }
-                }
-            }
-        }
     }
 
     override fun onClickItem(itemViewModel: Dua, type: Int, position: Int) {
         viewModel.getDua(itemViewModel.id)
+        findNavController().navigate(R.id.action_destination_dua_to_duaDetailsFragment)
+
     }
 }

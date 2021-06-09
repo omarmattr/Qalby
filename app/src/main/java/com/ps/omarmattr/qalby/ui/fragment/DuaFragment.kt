@@ -38,29 +38,31 @@ class DuaFragment : Fragment() {
 
 
     private fun initViewPage() {
-        val viewPagerAdapter = ViewPagerAdapter(requireActivity())
-        viewPagerAdapter.addFragment(ListDuaFragment(), "Dua")
-        viewPagerAdapter.addFragment(ListDuaFragment(), "Saved")
+        val viewPagerAdapter = ViewPagerAdapter(requireActivity().supportFragmentManager)
+        val listDuaFragment = ListDuaFragment()
+        viewPagerAdapter.addFragment(listDuaFragment, "Dua")
+        viewPagerAdapter.addFragment(DuaDetailsFragment(), "Saved")
         viewPagerAdapter.addFragment(ListDuaFragment(), "Hifz")
         mBinding.viewPager.adapter = viewPagerAdapter
-        mBinding.viewPager.isUserInputEnabled = true
-        TabLayoutMediator(
-            mBinding.tableLayout, mBinding.viewPager
-        ) { tab: TabLayout.Tab, position: Int ->
-            when (position) {
-                0 -> {
-                    tab.text = "Songs"
-                }
-                1 -> {
-                    tab.text = "Album"
-                }
-                2 -> {
-                    tab.text = "Album"
-                }
-            }
-        }.attach()
+        mBinding.tableLayout.setupWithViewPager(mBinding.viewPager)
+//        TabLayoutMediator(
+//            mBinding.tableLayout, mBinding.viewPager
+//        ) { tab: TabLayout.Tab, position: Int ->
+//            when (position) {
+//                0 -> {
+//                    tab.text = "Songs"
+//                }
+//                1 -> {
+//                    tab.text = "Album"
+//                }
+//                2 -> {
+//                    tab.text = "Album"
+//                }
+//            }
+//        }.attach()
 
     }
+
 
 
 
