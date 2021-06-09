@@ -7,7 +7,7 @@ data class DuaRequestItem(
     @SerializedName("ayat")
     var ayat: String,
     @SerializedName("femaleAudioUrl")
-    var femaleAudioUrl: String,
+    var femaleAudioUrl: String?,
     @SerializedName("id")
     var id: Int,
     @SerializedName("isHifz")
@@ -15,7 +15,7 @@ data class DuaRequestItem(
     @SerializedName("isSaved")
     var isSaved: Boolean,
     @SerializedName("maleAudioUrl")
-    var maleAudioUrl: String,
+    var maleAudioUrl: String?,
     @SerializedName("name")
     var name: String,
     @SerializedName("reference")

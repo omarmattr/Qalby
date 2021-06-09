@@ -1,6 +1,7 @@
 package com.ps.omarmattr.qalby.repository
 
 import android.util.Log
+import com.ps.omarmattr.qalby.model.dua.DuaRequestItem
 import com.ps.omarmattr.qalby.model.solahTime.SendParam
 import com.ps.omarmattr.qalby.network.DuaInterface
 import com.ps.omarmattr.qalby.util.ResultRequest
@@ -20,6 +21,8 @@ class DuaRepository @Inject constructor(val duaInterface: DuaInterface) {
     private val listDuaMStateFlow: MutableStateFlow<ResultRequest<Any>> =
         MutableStateFlow(ResultRequest.loading(Any()))
 
+    var gatAllDua = arrayListOf<DuaRequestItem>()
+
     fun getDua(id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = duaInterface.getDua(
@@ -31,6 +34,8 @@ class DuaRepository @Inject constructor(val duaInterface: DuaInterface) {
                         Log.e(this.javaClass.name, "getPrayerTimes")
 
                         response.body()?.let {
+                            gatAllDua.clear()
+                            gatAllDua.addAll(it)
                             listDuaMStateFlow.emit(ResultRequest.success(it))
                         }
                     } catch (e: Exception) {
