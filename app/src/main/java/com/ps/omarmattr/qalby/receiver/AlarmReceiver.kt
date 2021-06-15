@@ -27,11 +27,10 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.e("ooooooooooootttt", "onReceive")
         val bundle = intent!!.getBundleExtra(BUNDLE_EXTRA)
-        bundle.getParcelable<SolahItem>(SOLAH_ITEM_EXTRA)?.let {
+        bundle!!.getParcelable<SolahItem>(SOLAH_ITEM_EXTRA)?.let {
             Log.e("ooooooooooootttt", "getParcelableExtra $it")
             preferencesManager = PreferencesManager(context!!)
             if (preferencesManager.sharedPreferences.getBoolean(it.name, false)) {
-
                 sendNotification(context, it)
             }
         }
