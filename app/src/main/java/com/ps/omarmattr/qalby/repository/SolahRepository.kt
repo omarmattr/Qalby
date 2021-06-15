@@ -4,12 +4,15 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.SystemClock
 import android.util.Log
 import com.ps.omarmattr.qalby.model.solahTime.Gregorian
 import com.ps.omarmattr.qalby.model.solahTime.SendParam
 import com.ps.omarmattr.qalby.model.solahTime.SolahItem
 import com.ps.omarmattr.qalby.network.SolahInterface
+import com.ps.omarmattr.qalby.other.BUNDLE_EXTRA
 import com.ps.omarmattr.qalby.other.SOLAH_ITEM_EXTRA
 import com.ps.omarmattr.qalby.receiver.AlarmReceiver
 import com.ps.omarmattr.qalby.util.ResultRequest
@@ -205,13 +208,16 @@ class SolahRepository @Inject constructor(
 
     fun alarmManager(context: Context, gregorian: Gregorian, time: String, solahItem: SolahItem) {
         val receiver = Intent(context, AlarmReceiver::class.java)
-        receiver.putExtra(SOLAH_ITEM_EXTRA, solahItem)
+        val bundle = Bundle()
+        bundle.putParcelable(SOLAH_ITEM_EXTRA, solahItem)
+        receiver.putExtra(BUNDLE_EXTRA, bundle)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            System.currentTimeMillis().toInt(),
+            solahItem.time.codePointAt(1),
             receiver,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
+
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.RTC, getFullTime(gregorian, time), pendingIntent)
     }
@@ -231,14 +237,14 @@ class SolahRepository @Inject constructor(
     private fun getFullTime(gregorian: Gregorian, time: String): Long {
         val cal = Calendar.getInstance(Locale.getDefault())
         cal[Calendar.YEAR] = gregorian.year.toInt()
-        cal[Calendar.MONTH] = gregorian.month.number-1
+        cal[Calendar.MONTH] = gregorian.month.number - 1
         cal[Calendar.DAY_OF_MONTH] = gregorian.day.toInt()
         cal[Calendar.HOUR_OF_DAY] = getHour(time)
         cal[Calendar.MINUTE] = getMinute(time)
-        Log.e(
-            "pppppp",
-            SimpleDateFormat("yyyy-MM_dd hh:mm a", Locale.getDefault()).format(cal.time)
-        )
+//        Log.e(
+//            "pppppp",
+//            SimpleDateFormat("yyyy-MM_dd hh:mm a", Locale.getDefault()).format(cal.time)
+//        )
         return cal.timeInMillis
     }
 
