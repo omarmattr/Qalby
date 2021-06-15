@@ -14,6 +14,7 @@ import com.ps.omarmattr.qalby.adapter.GenericAdapter
 import com.ps.omarmattr.qalby.databinding.FragmentListDuaBinding
 import com.ps.omarmattr.qalby.model.Dua
 import com.ps.omarmattr.qalby.model.getListDua
+import com.ps.omarmattr.qalby.other.DATA_DETAILS
 import com.ps.omarmattr.qalby.ui.viewmodel.DuaViewModel
 import com.ps.omarmattr.qalby.util.ResultRequest
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,8 +50,12 @@ class ListDuaFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<D
     }
 
     override fun onClickItem(itemViewModel: Dua, type: Int, position: Int) {
+        Log.e("tttttttttt","itemViewModel")
+
         viewModel.getDua(itemViewModel.id)
-        findNavController().navigate(R.id.action_destination_dua_to_duaDetailsFragment)
+        val bundle = Bundle()
+        bundle.putParcelable(DATA_DETAILS, itemViewModel)
+        findNavController().navigate(R.id.action_destination_dua_to_duaDetailsFragment, bundle)
 
     }
 }

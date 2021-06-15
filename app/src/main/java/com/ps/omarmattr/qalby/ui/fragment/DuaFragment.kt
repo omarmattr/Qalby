@@ -1,6 +1,7 @@
 package com.ps.omarmattr.qalby.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,15 +34,20 @@ class DuaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewPage()
+//        initViewPage()
     }
 
+    override fun onResume() {
+        super.onResume()
+        initViewPage()
+        Log.e("tttttttttt","OnResume")
+    }
 
     private fun initViewPage() {
         val viewPagerAdapter = ViewPagerAdapter(requireActivity().supportFragmentManager)
         val listDuaFragment = ListDuaFragment()
         viewPagerAdapter.addFragment(listDuaFragment, "Dua")
-        viewPagerAdapter.addFragment(DuaDetailsFragment(), "Saved")
+//        viewPagerAdapter.addFragment(DuaDetailsFragment(), "Saved")
         viewPagerAdapter.addFragment(ListDuaFragment(), "Hifz")
         mBinding.viewPager.adapter = viewPagerAdapter
         mBinding.tableLayout.setupWithViewPager(mBinding.viewPager)
