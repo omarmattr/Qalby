@@ -26,9 +26,6 @@ class DuaViewModel @Inject constructor(
 ) :
     AndroidViewModel(application) {
 
-//    var musicServiceConnection: MusicServiceConnection =
-//        MusicServiceConnection(application.applicationContext)
-//
 
     fun getDua(id: Int) {
         duaRepository.getDua(
@@ -39,7 +36,7 @@ class DuaViewModel @Inject constructor(
     val listDuaStateFlow: StateFlow<ResultRequest<Any>> = duaRepository.listDuaStateFlow
 
 
-    lateinit var playbackState: LiveData<PlaybackStateCompat?>
+     var playbackState: LiveData<PlaybackStateCompat?>?=null
 
 
     private val _curDuaDuration = MutableLiveData<Long>()
@@ -52,7 +49,7 @@ class DuaViewModel @Inject constructor(
     fun updateCurrentPlayerPosition() {
         viewModelScope.launch {
             while (true) {
-                val pos = playbackState.value?.currentPlaybackPosition
+                val pos = playbackState?.value?.currentPlaybackPosition
                 if (curPlayerPosition.value != pos) {
                     _curPlayerPosition.postValue(pos)
                     _curDuaDuration.postValue(MusicService.curDuaDuration)
@@ -62,7 +59,7 @@ class DuaViewModel @Inject constructor(
         }
     }
 
-    lateinit var curPlayingDua: LiveData<MediaMetadataCompat?>
+    var curPlayingDua: LiveData<MediaMetadataCompat?>? = null
 
 
     fun playOrToggleDua(
@@ -70,11 +67,11 @@ class DuaViewModel @Inject constructor(
         musicServiceConnection: MusicServiceConnection,
         toggle: Boolean = false
     ) {
-        val isPrepared = playbackState.value?.isPrepared ?: false
+        val isPrepared = playbackState?.value?.isPrepared ?: false
         if (isPrepared && mediaItem.id.toString() ==
-            curPlayingDua.value?.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID)
+            curPlayingDua?.value?.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID)
         ) {
-            playbackState.value?.let { playbackState ->
+            playbackState?.value?.let { playbackState ->
                 when {
                     playbackState.isPlaying -> if (toggle) musicServiceConnection.transportControls.pause()
                     playbackState.isPlayEnabled -> musicServiceConnection.transportControls.play()
@@ -85,4 +82,14 @@ class DuaViewModel @Inject constructor(
             musicServiceConnection.transportControls.playFromMediaId(mediaItem.id.toString(), null)
         }
     }
+
+
+    fun skipToNextSong(musicServiceConnection: MusicServiceConnection) {
+        musicServiceConnection.transportControls.skipToNext()
+    }
+
+    fun skipToPreviousSong(musicServiceConnection: MusicServiceConnection) {
+        musicServiceConnection.transportControls.skipToPrevious()
+    }
+
 }

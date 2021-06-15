@@ -25,6 +25,7 @@ class DuaRepository @Inject constructor(val duaInterface: DuaInterface) {
 
     fun getDua(id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
+            listDuaMStateFlow.emit(ResultRequest.loading(Any()))
             val response = duaInterface.getDua(
                 id
             )

@@ -8,7 +8,7 @@ import com.ps.omarmattr.qalby.exoplayer.MusicService
 import com.ps.omarmattr.qalby.other.NOTIFICATION_ID
 
 class MusicPlayerNotificationListener(
-    private val musicService: MusicService
+     val musicService: MusicService
 ) : PlayerNotificationManager.NotificationListener {
 
     override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {

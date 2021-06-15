@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.model.solahTime.SolahItem
+import com.ps.omarmattr.qalby.other.BUNDLE_EXTRA
 import com.ps.omarmattr.qalby.other.SOLAH_ITEM_EXTRA
 import com.ps.omarmattr.qalby.ui.activity.MainActivity
 import com.ps.omarmattr.qalby.util.PreferencesManager
@@ -24,12 +25,12 @@ class AlarmReceiver : BroadcastReceiver() {
     private lateinit var preferencesManager: PreferencesManager
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.e("oooooooooooo", "onReceive")
-        intent!!.getParcelableExtra<SolahItem>(SOLAH_ITEM_EXTRA)?.let {
-            Log.e("oooooooooooo", "getParcelableExtra $it")
+        Log.e("ooooooooooootttt", "onReceive")
+        val bundle = intent!!.getBundleExtra(BUNDLE_EXTRA)
+        bundle!!.getParcelable<SolahItem>(SOLAH_ITEM_EXTRA)?.let {
+            Log.e("ooooooooooootttt", "getParcelableExtra $it")
             preferencesManager = PreferencesManager(context!!)
             if (preferencesManager.sharedPreferences.getBoolean(it.name, false)) {
-
                 sendNotification(context, it)
             }
         }

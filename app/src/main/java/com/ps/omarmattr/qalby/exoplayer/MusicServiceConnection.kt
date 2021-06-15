@@ -36,7 +36,7 @@ class MusicServiceConnection(
 
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
 
-    private val mediaBrowser = MediaBrowserCompat(
+    val mediaBrowser = MediaBrowserCompat(
         context,
         ComponentName(
             context,

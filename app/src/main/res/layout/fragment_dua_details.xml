@@ -11,17 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_16sdp"
-            android:text="Morning"
-            android:textColor="@color/secondary"
-            android:textSize="@dimen/_18ssp"
-            app:layout_constraintEnd_toEndOf="parent"
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginVertical="@dimen/_24sdp"
+            android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_14sdp"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/_16ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+            app:layout_constraintEnd_toStartOf="@+id/size"
+            app:layout_constraintStart_toEndOf="@+id/btnBack"
+            app:layout_constraintTop_toTopOf="@+id/btnBack" />
 
         <TextView
             android:id="@+id/size"
@@ -33,8 +48,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title" />
-
-
 
 
         <TextView
@@ -55,6 +68,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteX="91dp"
             tools:layout_editor_absoluteY="21dp" />
+
         <ImageView
             android:layout_width="15dp"
             android:layout_height="15dp"
@@ -69,16 +83,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:paddingVertical="@dimen/_8sdp"
             android:text="HIFZ"
-            app:layout_constraintEnd_toStartOf="@+id/materialTextView4"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/materialTextView"
-            app:layout_constraintTop_toTopOf="@+id/materialTextView"
             android:textColor="@color/secondary_100"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:paddingHorizontal="@dimen/_16sdp"
-            android:paddingVertical="@dimen/_8sdp"/>
+            app:layout_constraintEnd_toStartOf="@+id/materialTextView4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/materialTextView"
+            app:layout_constraintTop_toTopOf="@+id/materialTextView" />
 
 
         <ImageView
@@ -91,24 +105,21 @@
             app:layout_constraintTop_toTopOf="@+id/materialTextView2" />
 
 
-
-
         <TextView
             android:id="@+id/materialTextView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:paddingVertical="@dimen/_8sdp"
             android:text="SHARE"
             android:textColor="@color/secondary_100"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:paddingHorizontal="@dimen/_16sdp"
-            android:paddingVertical="@dimen/_8sdp"
             app:layout_constraintEnd_toStartOf="@+id/materialTextView5"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/materialTextView2"
-            app:layout_constraintTop_toTopOf="@+id/materialTextView2"
-            />
+            app:layout_constraintTop_toTopOf="@+id/materialTextView2" />
 
         <ImageView
             android:id="@+id/imageView5"
@@ -134,17 +145,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:paddingVertical="@dimen/_8sdp"
             android:text="REFERENCE"
             android:textColor="@color/secondary_100"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:paddingHorizontal="@dimen/_16sdp"
-            android:paddingVertical="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/materialTextView4"
-            app:layout_constraintTop_toTopOf="@+id/materialTextView4"
-            />
+            app:layout_constraintTop_toTopOf="@+id/materialTextView4" />
 
 
         <androidx.viewpager2.widget.ViewPager2
@@ -155,7 +165,7 @@
             android:background="@drawable/bg_top_corners"
             android:paddingTop="@dimen/_16sdp"
             app:layout_constraintBottom_toTopOf="@+id/materialTextView2"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+            app:layout_constraintTop_toBottomOf="@+id/btnBack" />
 
         <View
             android:id="@+id/view3"
@@ -210,7 +220,7 @@
             android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_16sdp"
             android:backgroundTint="@color/secondary_100"
-            android:src="@drawable/ic_pause"
+            android:src="@drawable/ic_play"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/seek"
             app:layout_constraintStart_toStartOf="@+id/seek"
