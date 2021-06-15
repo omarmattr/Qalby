@@ -9,13 +9,15 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_margin="@dimen/_8sdp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_120sdp"
+            android:layout_height="@dimen/_200sdp"
+            uriImage="@{social.imageUrl}"
             android:src="@drawable/ic_launcher_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

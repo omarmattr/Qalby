@@ -3,6 +3,7 @@ package com.ps.omarmattr.qalby.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ps.omarmattr.qalby.BR
 import com.ps.omarmattr.qalby.R
@@ -52,6 +53,8 @@ class HomeAdapter(var arrayList: ArrayList<HomeItem>, private val click: OnClick
                         }
 
                     })
+                if (position == 1) layoutManager =
+                    LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
                 mAdapter.data = arrayList[position].social
                 adapter = mAdapter
             }
