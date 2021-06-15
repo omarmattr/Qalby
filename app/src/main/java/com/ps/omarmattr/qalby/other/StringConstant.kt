@@ -20,3 +20,4 @@ const val NOTIFICATION_ID = 1
 const val AZAN_KEY = "SolahItem"
 const val SOLAH_ITEM_EXTRA = "SolahItem"
 const val PREFERENCES_NAME = "Qalby"
+const val PREFERENCES_IS_ALARM = "Qalby"
