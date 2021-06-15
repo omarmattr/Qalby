@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.ps.omarmattr.qalby.adapter.HomeAdapter
 import com.ps.omarmattr.qalby.databinding.FragmentHomeBinding
-import com.ps.omarmattr.qalby.model.location.ResultLocation
+import com.ps.omarmattr.qalby.model.home.HomeItem
+import com.ps.omarmattr.qalby.model.home.social.Social
 import com.ps.omarmattr.qalby.model.solahTime.SendParam
 import com.ps.omarmattr.qalby.model.solahTime.SolahTime
 import com.ps.omarmattr.qalby.other.FunctionConstant.addSolah
+import com.ps.omarmattr.qalby.ui.viewmodel.HomeViewModel
 import com.ps.omarmattr.qalby.ui.viewmodel.MainViewModel
 import com.ps.omarmattr.qalby.ui.viewmodel.SolahViewModel
 import com.ps.omarmattr.qalby.util.ResultRequest
@@ -20,19 +23,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
     private val mBinding by lazy {
         FragmentHomeBinding.inflate(layoutInflater)
     }
+
 
     @Inject
     lateinit var mainViewModel: MainViewModel
 
     @Inject
     lateinit var viewModel: SolahViewModel
+
+    @Inject
+    lateinit var homeViewModel: HomeViewModel
+    private val mAdapter by lazy {
+        HomeAdapter(arrayListOf(), this)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +54,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        homeViewModel.getSocial()
+        val cal = Calendar.getInstance()
+        mBinding.rcHome.apply {
+            adapter = mAdapter
+        }
         CoroutineScope(Dispatchers.IO).launch {
             mainViewModel.getLocationLiveData.collect {
                 withContext(Dispatchers.Main) {
@@ -49,16 +66,14 @@ class HomeFragment : Fragment() {
                         ResultRequest.Status.EMPTY -> {
                         }
                         ResultRequest.Status.SUCCESS -> {
-                            val data = it.data as ResultLocation
-                            mBinding.txtLocation.text =
-                                data.address.country + " , " + data.address.city
+
                             viewModel.getSolahWithLatLog(
                                 SendParam(
-                                    latitude = data.lat.toDouble(),
-                                    longitude = data.lon.toDouble(),
+                                    latitude = it.data.toString().toDouble(),
+                                    longitude = it.message!!.toDouble(),
                                     method = 3,
-                                    month = 6,
-                                    year = 2021
+                                    month = cal.get(Calendar.MONTH) + 1,
+                                    year = cal.get(Calendar.YEAR)
                                 )
                             )
                         }
@@ -92,6 +107,74 @@ class HomeFragment : Fragment() {
                     }
                 }
                 CoroutineScope(Dispatchers.IO).launch {
+                    homeViewModel.getSocialLiveData().collect {
+                        withContext(Dispatchers.Main) {
+                            when (it.status) {
+                                ResultRequest.Status.EMPTY -> {
+                                    // mBinding.time.nextTime.text = "${it.data}"
+
+                                }
+                                ResultRequest.Status.SUCCESS -> {
+                                    val data = it.data as Social
+                                    if (mAdapter.arrayList.size < 2) mAdapter.arrayList.add(
+                                        HomeItem(
+                                            name = "Instagram",
+                                            social = data
+                                        )
+                                    )
+                                    mAdapter.notifyDataSetChanged()
+                                    mAdapter.notifyDataSetChanged()
+
+                                }
+                                ResultRequest.Status.LOADING -> {
+                                }
+                                ResultRequest.Status.ERROR -> {
+                                }
+                            }
+                        }
+
+                    }
+                }
+                CoroutineScope(Dispatchers.IO).launch {
+                    homeViewModel.getSocialFacebookLiveData().collect {
+                        withContext(Dispatchers.Main) {
+                            when (it.status) {
+                                ResultRequest.Status.EMPTY -> {
+
+                                }
+                                ResultRequest.Status.SUCCESS -> {
+                                    val dataFace = it.data as Social
+                                    Log.e(
+                                        this.javaClass.name,
+                                        "getSocialFacebookLiveData SUCCESS"
+                                    )
+                                    if (mAdapter.arrayList.size < 2) mAdapter.arrayList.add(
+                                        HomeItem(
+                                            name = "Facebook",
+                                            social = dataFace
+                                        )
+                                    )
+                                    mAdapter.notifyDataSetChanged()
+
+                                }
+                                ResultRequest.Status.LOADING -> {
+                                    Log.e(
+                                        this.javaClass.name,
+                                        "getSocialFacebookLiveData LOADING"
+                                    )
+                                }
+                                ResultRequest.Status.ERROR -> {
+                                    Log.e(
+                                        this.javaClass.name,
+                                        "getSocialFacebookLiveData ${it.message}"
+                                    )
+                                }
+                            }
+                        }
+
+                    }
+                }
+                CoroutineScope(Dispatchers.IO).launch {
                     viewModel.getSolahWithLatLogLiveData.collect {
                         withContext(Dispatchers.Main) {
                             when (it.status) {
@@ -104,9 +187,19 @@ class HomeFragment : Fragment() {
                                     )
 
                                     val data = it.data as SolahTime
-                                    val solahArray =
-                                        addSolah(requireContext(), data.data.first().timings)
-                                    viewModel.getNextTime(solahArray)
+                                    data.data.find {
+                                        it.date.gregorian.day.toInt() == cal.get(Calendar.DAY_OF_MONTH)
+                                    }?.let {
+                                        mBinding.txtLocation.text = it.meta.timezone
+                                        viewModel.getNextTime(
+                                            addSolah(
+                                                requireContext(),
+                                                it.timings
+                                            )
+                                        )
+
+                                    }
+
 
                                 }
                                 ResultRequest.Status.LOADING -> {
@@ -127,5 +220,8 @@ class HomeFragment : Fragment() {
 
             }
         }
+    }
+
+    override fun onClick(itemHome: HomeItem) {
     }
 }

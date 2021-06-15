@@ -14,7 +14,8 @@ class MainViewModel @Inject constructor(
     private val locationRepository: LocationRepository
 ) : AndroidViewModel(application) {
 
-    fun getLocation(lat: Double, lon: Double) = locationRepository.getLocation(lat, lon)
+   // fun getLocation(lat: Double, lon: Double) = locationRepository.getLocation(lat, lon)
+   val locationLiveData = locationRepository.locationLiveData
     val getLocationLiveData = locationRepository.getLocationLiveData()
 
 }

@@ -32,7 +32,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="parallax">
 
@@ -166,6 +165,7 @@
                 android:layout_height="match_parent">
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcHome"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:itemCount="3"

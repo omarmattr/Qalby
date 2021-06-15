@@ -3,10 +3,12 @@ package com.ps.omarmattr.qalby.di
 
 import com.ps.omarmattr.qalby.network.DuaInterface
 import com.ps.omarmattr.qalby.network.LocationInterface
+import com.ps.omarmattr.qalby.network.SocialInterface
 import com.ps.omarmattr.qalby.network.SolahInterface
 import com.ps.omarmattr.qalby.other.BASE_LOCATION_URL
 import com.ps.omarmattr.qalby.other.BASE_URL
 import com.ps.omarmattr.qalby.other.BASE_URL_Qalby
+import com.ps.omarmattr.qalby.other.BASE_URL_Qalby2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,6 +54,11 @@ object RetrofitModule {
     @Singleton
     fun duaInterface() =
         InstaceRetrofit(BASE_URL_Qalby).create(DuaInterface::class.java)
+
+    @Provides
+    @Singleton
+    fun socialInterface() =
+        InstaceRetrofit(BASE_URL_Qalby2).create(SocialInterface::class.java)
 
 
 }

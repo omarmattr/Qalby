@@ -1,10 +1,17 @@
 package com.ps.omarmattr.qalby.repository
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.CountDownTimer
 import android.util.Log
+import com.ps.omarmattr.qalby.model.solahTime.Gregorian
 import com.ps.omarmattr.qalby.model.solahTime.SendParam
 import com.ps.omarmattr.qalby.model.solahTime.SolahItem
 import com.ps.omarmattr.qalby.network.SolahInterface
+import com.ps.omarmattr.qalby.other.SOLAH_ITEM_EXTRA
+import com.ps.omarmattr.qalby.receiver.AlarmReceiver
 import com.ps.omarmattr.qalby.util.ResultRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +26,7 @@ import javax.inject.Singleton
 @Singleton
 class SolahRepository @Inject constructor(
     val solahInterface
-    : SolahInterface,
+    : SolahInterface
 ) {
 
     private val getSolahTimesLiveData: MutableStateFlow<ResultRequest<Any>> =
@@ -29,7 +36,8 @@ class SolahRepository @Inject constructor(
     private val countDownLiveData: MutableStateFlow<ResultRequest<Any>> =
         MutableStateFlow(ResultRequest.loading(Any()))
     private lateinit var countDownTimer: CountDownTimer
-    private val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    private val sdf = SimpleDateFormat("hh:mm:ss a", Locale.getDefault())
+    private val sdf2 = SimpleDateFormat("hh:mm a", Locale.getDefault())
 
 
     fun getPrayerTimes(sendParam: SendParam) {
@@ -126,7 +134,7 @@ class SolahRepository @Inject constructor(
     }
 
     private fun currentDate(): Date {
-        val df = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        val df = SimpleDateFormat("hh:mm:ss a", Locale.getDefault())
         return sdf.parse(df.format(Date()))!!
     }
 
@@ -148,7 +156,7 @@ class SolahRepository @Inject constructor(
 
     fun getNextTime(solahItem: ArrayList<SolahItem>) {
         val date = currentDate()
-        solahItem.find { i -> sdf.parse(i.time)!!.after(date) }?.let {
+        solahItem.find { i -> sdf2.parse(i.time)!!.after(date) }?.let {
             setCountDownTimer(it.name, it.time)
         }
     }
@@ -156,7 +164,7 @@ class SolahRepository @Inject constructor(
     private fun setCountDownTimer(name: String, time: String) {
 
         val start = currentDate()
-        val end = sdf.parse(time)
+        val end = sdf2.parse(time)
         if (end != null) {
             var difference = end.time - start.time
             if (difference < 0) {
@@ -166,32 +174,72 @@ class SolahRepository @Inject constructor(
                     difference = (max.time - start.time) + (end.time - min.time)
             }
             CoroutineScope(Dispatchers.IO).launch {
-                countDownLiveData.emit(ResultRequest.empty("$name $time"))}
-
-                CoroutineScope(Dispatchers.Main).launch {
-                    if (::countDownTimer.isInitialized) countDownTimer.cancel()
-
-                    countDownTimer = object : CountDownTimer(difference, 1000) {
-                        override fun onTick(times: Long) {
-                            val value = formatMilliSecondsToTime(times)
-                            CoroutineScope(Dispatchers.IO).launch {
-                                countDownLiveData.emit(ResultRequest.success(value))
-
-                            }
-
-                        }
-
-                        override fun onFinish() {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                countDownLiveData.emit(ResultRequest.success("Adzan $name"))
-                            }
-                        }
-                    }
-
-                    countDownTimer.start()
-                }
+                countDownLiveData.emit(ResultRequest.empty("$name $time"))
             }
 
+            CoroutineScope(Dispatchers.Main).launch {
+                if (::countDownTimer.isInitialized) countDownTimer.cancel()
+
+                countDownTimer = object : CountDownTimer(difference, 1000) {
+                    override fun onTick(times: Long) {
+                        val value = formatMilliSecondsToTime(times)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            countDownLiveData.emit(ResultRequest.success(value))
+
+                        }
+
+                    }
+
+                    override fun onFinish() {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            countDownLiveData.emit(ResultRequest.success("Adzan $name"))
+                        }
+                    }
+                }
+
+                countDownTimer.start()
+            }
+        }
+
+    }
+
+    fun alarmManager(context: Context, gregorian: Gregorian, time: String, solahItem: SolahItem) {
+        val receiver = Intent(context, AlarmReceiver::class.java)
+        receiver.putExtra(SOLAH_ITEM_EXTRA, solahItem)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            System.currentTimeMillis().toInt(),
+            receiver,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.set(AlarmManager.RTC, getFullTime(gregorian, time), pendingIntent)
+    }
+
+    private val newSdf = SimpleDateFormat("H:mm", Locale.getDefault())
+    private val cal = Calendar.getInstance()
+    private fun getHour(time: String): Int {
+        cal.time = newSdf.parse(time)!!
+        return cal.get(Calendar.HOUR_OF_DAY)
+    }
+
+    private fun getMinute(time: String): Int {
+        cal.time = newSdf.parse(time)!!
+        return cal.get(Calendar.MINUTE)
+    }
+
+    private fun getFullTime(gregorian: Gregorian, time: String): Long {
+        val cal = Calendar.getInstance(Locale.getDefault())
+        cal[Calendar.YEAR] = gregorian.year.toInt()
+        cal[Calendar.MONTH] = gregorian.month.number-1
+        cal[Calendar.DAY_OF_MONTH] = gregorian.day.toInt()
+        cal[Calendar.HOUR_OF_DAY] = getHour(time)
+        cal[Calendar.MINUTE] = getMinute(time)
+        Log.e(
+            "pppppp",
+            SimpleDateFormat("yyyy-MM_dd hh:mm a", Locale.getDefault()).format(cal.time)
+        )
+        return cal.timeInMillis
     }
 
     fun getPrayerTimesLiveData() = getSolahTimesLiveData

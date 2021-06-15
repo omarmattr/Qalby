@@ -11,10 +11,13 @@ import com.ps.omarmattr.qalby.BR
 import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.adapter.GenericAdapter
 import com.ps.omarmattr.qalby.databinding.FragmentSolahBinding
-import com.ps.omarmattr.qalby.model.location.ResultLocation
-import com.ps.omarmattr.qalby.model.solahTime.*
+import com.ps.omarmattr.qalby.model.solahTime.Data
 import com.ps.omarmattr.qalby.model.solahTime.Date
+import com.ps.omarmattr.qalby.model.solahTime.SolahItem
+import com.ps.omarmattr.qalby.model.solahTime.SolahTime
+import com.ps.omarmattr.qalby.other.AZAN_KEY
 import com.ps.omarmattr.qalby.other.FunctionConstant.addSolah
+import com.ps.omarmattr.qalby.ui.dialog.AzanDialog
 import com.ps.omarmattr.qalby.ui.viewmodel.MainViewModel
 import com.ps.omarmattr.qalby.ui.viewmodel.SolahViewModel
 import com.ps.omarmattr.qalby.util.ResultRequest
@@ -25,7 +28,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -44,6 +46,7 @@ class SolahFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<Sol
     private val mAdapter by lazy {
         GenericAdapter(R.layout.item_solah, BR.solah, this)
     }
+    private val sdf = SimpleDateFormat("H:mm", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +69,7 @@ class SolahFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<Sol
                 withContext(Dispatchers.Main) {
                     when (it.status) {
                         ResultRequest.Status.EMPTY -> {
-                           // mBinding.time.nextTime.text = "${it.data}"
+                            // mBinding.time.nextTime.text = "${it.data}"
 
                         }
                         ResultRequest.Status.SUCCESS -> {
@@ -96,11 +99,44 @@ class SolahFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<Sol
                             )
 
                             val data = it.data as SolahTime
+                            val cal1 = Calendar.getInstance()
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val after = data.data.filter { i ->
+                                    val cal2 = Calendar.getInstance()
+                                    cal2.clear()
+                                    cal2.set(Calendar.YEAR, i.date.gregorian.year.toInt())
+                                    cal2.set(Calendar.MONTH, i.date.gregorian.month.number-1)
+                                    cal2.set(Calendar.DAY_OF_MONTH, i.date.gregorian.day.toInt())
+                                    cal1.get(Calendar.DAY_OF_YEAR) <= cal2.get(Calendar.DAY_OF_YEAR) &&
+                                            cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
 
-                            setUITimes(data.data.first().date)
-                            val solahArray = addSolah(requireContext(),data.data.first().timings)
-                            mAdapter.data = solahArray
-                            viewModel.getNextTime(solahArray)
+                                }
+
+
+                                Log.e("ppppppp2", after.toString())
+                                after.forEach { i ->
+                                    addAlarm(i, i.timings.fajr, getString(R.string.fajr))
+                                    addAlarm(i, i.timings.sunrise, getString(R.string.sunless))
+                                    addAlarm(i, i.timings.dhuhr, getString(R.string.dhuhr))
+                                    addAlarm(i, i.timings.asr, getString(R.string.asr))
+                                    addAlarm(i, i.timings.maghrib, getString(R.string.maghrib))
+                                    addAlarm(i, i.timings.sunset, getString(R.string.sunset))
+                                    addAlarm(i, i.timings.isha, getString(R.string.isha))
+
+                                }
+                            }
+
+                            data.data.find {
+                                it.date.gregorian.day.toInt() == cal1.get(Calendar.DAY_OF_MONTH)
+                            }?.let {
+                                setUITimes(it.date)
+                                val solahArray = addSolah(requireContext(), it.timings)
+                                mAdapter.data = solahArray
+                                viewModel.getNextTime(solahArray)
+                            }
+
+
+
 
                         }
                         ResultRequest.Status.LOADING -> {
@@ -121,7 +157,11 @@ class SolahFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<Sol
     }
 
     override fun onClickItem(itemViewModel: SolahItem, type: Int, position: Int) {
-
+        val bundle = Bundle()
+        bundle.putParcelable(AZAN_KEY, itemViewModel)
+        val azanDialog = AzanDialog()
+        azanDialog.arguments = bundle
+        azanDialog.show(childFragmentManager, "")
     }
 
     private fun setUITimes(date: Date) {
@@ -130,5 +170,17 @@ class SolahFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<Sol
         mBinding.islamicDate.text = date.hijri.date
 
     }
+
+    fun addAlarm(data: Data, time: String, name: String) {
+        viewModel.alarmManager(
+            requireContext(), data.date.gregorian, time,
+            SolahItem(
+                name = name,
+                time = time,
+                state = false
+            )
+        )
+    }
+
 
 }

@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LocationRepository @Inject constructor(val locationInterface: LocationInterface) {
-    private val locationLiveData: MutableStateFlow<ResultRequest<Any>> =
+     val locationLiveData: MutableStateFlow<ResultRequest<Any>> =
         MutableStateFlow(ResultRequest.loading(Any()))
     fun getLocation(lat:Double,lon:Double) {
         CoroutineScope(Dispatchers.IO).launch {

@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.EasyWayLocation.LOCATION_SETTING_REQUEST_CODE
-import com.example.easywaylocation.GetLocationDetail
 import com.example.easywaylocation.Listener
 import com.google.android.gms.location.LocationRequest
 import com.karumi.dexter.Dexter
@@ -28,7 +27,11 @@ import com.karumi.dexter.listener.single.PermissionListener
 import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.databinding.ActivityMainBinding
 import com.ps.omarmattr.qalby.ui.viewmodel.MainViewModel
+import com.ps.omarmattr.qalby.util.ResultRequest
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -38,9 +41,9 @@ class MainActivity : AppCompatActivity(), Listener {
     private var navHostFragment: Fragment? = null
     private lateinit var mBinding: ActivityMainBinding
     var easyWayLocation: EasyWayLocation? = null
-    @Inject
-    lateinit var viewModel:MainViewModel
 
+    @Inject
+    lateinit var viewModel: MainViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,8 +109,15 @@ class MainActivity : AppCompatActivity(), Listener {
     }
 
     override fun currentLocation(location: Location) {
-
-        viewModel.getLocation(location.latitude,location.longitude)
+        Log.e("ooooooo", "currentLocation")
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.locationLiveData.emit(
+                ResultRequest.success(
+                    location.latitude,
+                    location.longitude.toString()
+                )
+            )
+        }
     }
 
     override fun locationCancelled() {
@@ -164,7 +174,6 @@ class MainActivity : AppCompatActivity(), Listener {
                 ).show()
             }.onSameThread().check()
     }
-
 
 
 }
