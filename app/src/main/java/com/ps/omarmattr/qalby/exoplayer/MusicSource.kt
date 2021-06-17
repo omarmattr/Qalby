@@ -15,12 +15,12 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MusicSource constructor(
-    var getAllDua: ArrayList<DuaRequestItem>
+    var getAllDua: ArrayList<DuaRequestItem>, var type: Int
 ) {
 
     var duaList = emptyList<MediaMetadataCompat>()
 
-    suspend fun fetchMediaData(onComplete:()->Unit) = withContext(Dispatchers.IO) {
+    suspend fun fetchMediaData(onComplete: () -> Unit) = withContext(Dispatchers.IO) {
         duaList = emptyList()
         state = State.STATE_INITIALIZING
         val allDua = getAllDua
@@ -36,7 +36,8 @@ class MusicSource constructor(
                 )
                 .putString(
                     MediaMetadataCompat.METADATA_KEY_MEDIA_URI,
-                    dua.maleAudioUrl ?: dua.femaleAudioUrl ?: ""
+                    if (type == 1)
+                        dua.maleAudioUrl ?: dua.femaleAudioUrl ?: "" else  dua.femaleAudioUrl ?: dua.maleAudioUrl ?: ""
                 )
                 .putString(
                     MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI,
@@ -47,8 +48,6 @@ class MusicSource constructor(
                 .build()
         }
         onComplete()
-        Log.e("ttttttttttt", duaList.toString())
-
         state = State.STATE_INITIALIZED
     }
 

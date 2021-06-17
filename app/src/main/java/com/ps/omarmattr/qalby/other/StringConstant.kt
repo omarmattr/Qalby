@@ -31,3 +31,5 @@ const val PREFERENCES_METHOD_NAME = "methodName"
 const val PREFERENCES_ADDRESS = "address"
 const val PREFERENCES_ADDRESS_NAME = "addressName"
 const val PREFERENCES_DEFAULT_AZAN = "defaultAzan"
+
+const val TYPE_SOUND = "typeSound"

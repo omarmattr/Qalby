@@ -256,6 +256,7 @@
             android:text="@string/male"
             android:textColor="@color/secondary_100"
             android:textSize="@dimen/_16sdp"
+            android:visibility="gone"
             app:drawableEndCompat="@drawable/ic_arrow_down"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
             app:layout_constraintStart_toStartOf="@+id/current_time"

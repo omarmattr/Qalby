@@ -22,7 +22,9 @@ import com.ps.omarmattr.qalby.exoplayer.callbacks.MusicPlayerEventListener
 import com.ps.omarmattr.qalby.exoplayer.callbacks.MusicPlayerNotificationListener
 import com.ps.omarmattr.qalby.other.MEDIA_ROOT_ID
 import com.ps.omarmattr.qalby.other.NETWORK_ERROR
+import com.ps.omarmattr.qalby.other.TYPE_SOUND
 import com.ps.omarmattr.qalby.repository.DuaRepository
+import com.ps.omarmattr.qalby.util.PreferencesManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -42,6 +44,10 @@ class MusicService : MediaBrowserServiceCompat() {
     @Inject
     lateinit var repository: DuaRepository
     var musicSource: MusicSource? = null
+
+    private val shared by lazy {
+        PreferencesManager(this)
+    }
 
     private lateinit var musicNotificationManager: MusicNotificationManager
 
@@ -72,7 +78,8 @@ class MusicService : MediaBrowserServiceCompat() {
 
     override fun onCreate() {
         super.onCreate()
-        musicSource = MusicSource(repository.gatAllDua)
+        musicSource =
+            MusicSource(repository.gatAllDua, shared.sharedPreferences.getInt(TYPE_SOUND, 1))
         serviceScope.launch {
             musicSource!!.fetchMediaData {}
         }
@@ -134,7 +141,8 @@ class MusicService : MediaBrowserServiceCompat() {
     ) {
         if (isInit) {
             musicSource!!.duaList = emptyList()
-            musicSource = MusicSource(repository.gatAllDua)
+            musicSource =
+                MusicSource(repository.gatAllDua, shared.sharedPreferences.getInt(TYPE_SOUND, 1))
             serviceScope.launch {
                 musicSource!!.fetchMediaData {
                     CoroutineScope(Dispatchers.Main).launch {
