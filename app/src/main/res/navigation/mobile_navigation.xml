@@ -52,7 +52,7 @@
         />
     <fragment
         android:id="@+id/settingSolahFragment"
-        android:name="com.ps.omarmattr.qalby.ui.fragment.SettingSolahFragment"
+        android:name="com.ps.omarmattr.qalby.ui.dialog.SettingSolahFragment"
         android:label="SettingSolahFragment"
         tools:layout="@layout/fragment_solah_setting"/>
     <fragment

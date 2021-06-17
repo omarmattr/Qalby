@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.ps.omarmattr.qalby.BR
 import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.adapter.GenericAdapter
@@ -19,6 +18,7 @@ import com.ps.omarmattr.qalby.other.AZAN_KEY
 import com.ps.omarmattr.qalby.other.FunctionConstant.addSolah
 import com.ps.omarmattr.qalby.other.PREFERENCES_IS_ALARM
 import com.ps.omarmattr.qalby.ui.dialog.AzanDialog
+import com.ps.omarmattr.qalby.ui.dialog.SettingSolahFragment
 import com.ps.omarmattr.qalby.ui.viewmodel.MainViewModel
 import com.ps.omarmattr.qalby.ui.viewmodel.SolahViewModel
 import com.ps.omarmattr.qalby.util.PreferencesManager
@@ -39,8 +39,6 @@ class SolahFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<Sol
     @Inject
     lateinit var viewModel: SolahViewModel
 
-    @Inject
-    lateinit var mainViewModel: MainViewModel
     private val mBinding by lazy {
         FragmentSolahBinding.inflate(layoutInflater)
     }
@@ -59,7 +57,8 @@ class SolahFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<Sol
         preferencesManager = PreferencesManager(requireContext())
         mBinding.apply {
             goToSetting.setOnClickListener {
-                findNavController().navigate(R.id.action_destination_solah_to_settingSolahFragment)
+                SettingSolahFragment().show(childFragmentManager,"")
+               // findNavController().navigate(R.id.action_destination_solah_to_settingSolahFragment)
             }
             rcSolah.apply {
                 adapter = mAdapter
