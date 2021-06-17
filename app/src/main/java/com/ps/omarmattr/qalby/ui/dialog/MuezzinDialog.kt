@@ -15,8 +15,9 @@ import com.ps.omarmattr.qalby.other.FunctionConstant
 import com.ps.omarmattr.qalby.other.PREFERENCES_DEFAULT_AZAN
 import com.ps.omarmattr.qalby.ui.viewmodel.SolahViewModel
 import com.ps.omarmattr.qalby.util.PreferencesManager
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
+@AndroidEntryPoint
 class MuezzinDialog : BottomSheetDialogFragment(),
     GenericAdapter.OnListItemViewClickListener<Azan> {
     private val mBinding by lazy {

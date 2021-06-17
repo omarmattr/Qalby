@@ -16,6 +16,7 @@ import com.ps.omarmattr.qalby.model.solahTime.SolahItem
 import com.ps.omarmattr.qalby.model.solahTime.SolahTime
 import com.ps.omarmattr.qalby.other.AZAN_KEY
 import com.ps.omarmattr.qalby.other.FunctionConstant.addSolah
+import com.ps.omarmattr.qalby.other.PREFERENCES_ADDRESS_NAME
 import com.ps.omarmattr.qalby.other.PREFERENCES_IS_ALARM
 import com.ps.omarmattr.qalby.ui.dialog.AzanDialog
 import com.ps.omarmattr.qalby.ui.dialog.SettingSolahFragment
@@ -157,10 +158,107 @@ class SolahFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<Sol
                                     }
 
                             }
+                            data.data.find {
+                                it.date.gregorian.day.toInt() == cal1.get(Calendar.DAY_OF_MONTH)
+                            }?.let {
+                                preferencesManager.editor.putString(PREFERENCES_ADDRESS_NAME,it.meta.timezone).apply()
+                                setUITimes(it.date)
+                                val solahArray = addSolah(requireContext(), it.timings)
+                                mAdapter.data = solahArray
+                                viewModel.getNextTime(solahArray)
+                            }
+
+
+                        }
+                        ResultRequest.Status.LOADING -> {
+                            Log.e(
+                                this@SolahFragment.javaClass.name,
+                                "getSolahWithLatLogLiveData LOADING"
+                            )
+                        }
+                        ResultRequest.Status.ERROR -> {
+                            Log.e(this@SolahFragment.javaClass.name, it.message!!)
+
+                        }
+                    }
+                }
+
+            }
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getSolahWithAddressLiveData.collect {
+                withContext(Dispatchers.Main) {
+                    when (it.status) {
+                        ResultRequest.Status.EMPTY -> {
+                        }
+                        ResultRequest.Status.SUCCESS -> {
+                            Log.e(
+                                this@SolahFragment.javaClass.name,
+                                "getSolahWithLatLogLiveData SUCCESS"
+                            )
+                            val cal1 = Calendar.getInstance()
+                            val data = it.data as SolahTime
+                            preferencesManager.sharedPreferences.getBoolean(
+                                PREFERENCES_IS_ALARM,
+                                false
+                            ).let {
+                                if (!it)
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        val after = data.data.filter { i ->
+                                            val cal2 = Calendar.getInstance()
+                                            cal2.clear()
+                                            cal2.set(Calendar.YEAR, i.date.gregorian.year.toInt())
+                                            cal2.set(
+                                                Calendar.MONTH,
+                                                i.date.gregorian.month.number - 1
+                                            )
+                                            cal2.set(
+                                                Calendar.DAY_OF_MONTH,
+                                                i.date.gregorian.day.toInt()
+                                            )
+                                            cal1.get(Calendar.DAY_OF_YEAR) <= cal2.get(Calendar.DAY_OF_YEAR) &&
+                                                    cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+
+                                        }
+
+
+                                        Log.e("ppppppp2", after.toString())
+                                        after.forEach { i ->
+                                            addAlarm(i, i.timings.fajr, getString(R.string.fajr))
+                                            addAlarm(
+                                                i,
+                                                i.timings.sunrise,
+                                                getString(R.string.sunless)
+                                            )
+                                            addAlarm(i, i.timings.dhuhr, getString(R.string.dhuhr))
+                                            addAlarm(i, i.timings.asr, getString(R.string.asr))
+                                            addAlarm(
+                                                i,
+                                                i.timings.maghrib,
+                                                getString(R.string.maghrib)
+                                            )
+                                            addAlarm(
+                                                i,
+                                                i.timings.sunset,
+                                                getString(R.string.sunset)
+                                            )
+                                            addAlarm(i, i.timings.isha, getString(R.string.isha))
+
+                                        }
+                                        withContext(Dispatchers.Main) {
+                                            preferencesManager.editor.putBoolean(
+                                                PREFERENCES_IS_ALARM,
+                                                true
+                                            ).apply()
+                                        }
+                                    }
+
+                            }
 
                             data.data.find {
                                 it.date.gregorian.day.toInt() == cal1.get(Calendar.DAY_OF_MONTH)
                             }?.let {
+                                preferencesManager.editor.putString(PREFERENCES_ADDRESS_NAME,it.meta.timezone).apply()
                                 setUITimes(it.date)
                                 val solahArray = addSolah(requireContext(), it.timings)
                                 mAdapter.data = solahArray

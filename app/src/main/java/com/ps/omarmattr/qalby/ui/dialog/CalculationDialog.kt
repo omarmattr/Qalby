@@ -11,7 +11,9 @@ import com.ps.omarmattr.qalby.databinding.DialogCalcualateBinding
 import com.ps.omarmattr.qalby.other.PREFERENCES_METHOD
 import com.ps.omarmattr.qalby.other.PREFERENCES_METHOD_NAME
 import com.ps.omarmattr.qalby.util.PreferencesManager
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CalculationDialog : BottomSheetDialogFragment() {
     private val mBinding by lazy {
         DialogCalcualateBinding.inflate(layoutInflater)

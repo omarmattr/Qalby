@@ -13,12 +13,17 @@ import com.ps.omarmattr.qalby.BR
 import com.ps.omarmattr.qalby.adapter.GenericAdapter
 import com.ps.omarmattr.qalby.databinding.FragmentSolahSettingBinding
 import com.ps.omarmattr.qalby.model.Setting
+import com.ps.omarmattr.qalby.other.PREFERENCES_ADDRESS_NAME
+import com.ps.omarmattr.qalby.other.PREFERENCES_METHOD_NAME
+import com.ps.omarmattr.qalby.util.PreferencesManager
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SettingSolahFragment : BottomSheetDialogFragment() ,GenericAdapter.OnListItemViewClickListener<Setting>{
     private val mBinding by lazy {
         FragmentSolahSettingBinding.inflate(layoutInflater)
     }
+    private lateinit var preferencesManager: PreferencesManager
 
     private val arraySetting by lazy {   arrayListOf(
         Setting(0, getString(R.string.location), ""),
@@ -44,6 +49,20 @@ class SettingSolahFragment : BottomSheetDialogFragment() ,GenericAdapter.OnListI
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        preferencesManager = PreferencesManager(requireContext())
+
+        preferencesManager.sharedPreferences.getString(
+            PREFERENCES_ADDRESS_NAME,
+            ""
+        )?.let {
+            arraySetting[0].subTitle = it
+        }
+        preferencesManager.sharedPreferences.getString(
+            PREFERENCES_METHOD_NAME,
+            ""
+        )?.let {
+            arraySetting[2].subTitle = it
+        }
         mBinding.apply {
             backBtn.setOnClickListener {
                dismiss()

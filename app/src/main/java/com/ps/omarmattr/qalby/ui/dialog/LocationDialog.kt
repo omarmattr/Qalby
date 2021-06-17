@@ -16,12 +16,13 @@ import com.ps.omarmattr.qalby.ui.viewmodel.MainViewModel
 import com.ps.omarmattr.qalby.ui.viewmodel.SolahViewModel
 import com.ps.omarmattr.qalby.util.PreferencesManager
 import com.ps.omarmattr.qalby.util.ResultRequest
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-
+@AndroidEntryPoint
 class LocationDialog : BottomSheetDialogFragment() {
     private val mBinding by lazy {
         DialogLocationBinding.inflate(layoutInflater)
@@ -48,6 +49,7 @@ class LocationDialog : BottomSheetDialogFragment() {
             btnUse.setOnClickListener {
                 getLocation()
                 preferencesManager.editor.putBoolean(PREFERENCES_ADDRESS, false).apply()
+                dismiss()
             }
             btnSave.setOnClickListener {
 
@@ -66,6 +68,7 @@ class LocationDialog : BottomSheetDialogFragment() {
                     )
                 }
                 preferencesManager.editor.putBoolean(PREFERENCES_ADDRESS, true).apply()
+                dismiss()
             }
         }
     }
