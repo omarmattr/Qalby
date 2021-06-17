@@ -51,7 +51,6 @@ class ListDuaFragment : Fragment(), GenericAdapter.OnListItemViewClickListener<D
 
     override fun onClickItem(itemViewModel: Dua, type: Int, position: Int) {
         Log.e("tttttttttt","itemViewModel")
-
         viewModel.getDua(itemViewModel.id)
         val bundle = Bundle()
         bundle.putParcelable(DATA_DETAILS, itemViewModel)

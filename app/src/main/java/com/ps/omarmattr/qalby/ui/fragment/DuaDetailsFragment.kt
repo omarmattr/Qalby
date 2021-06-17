@@ -235,16 +235,17 @@ class DuaDetailsFragment : Fragment(), GenericAdapter.OnListItemViewClickListene
     override fun onDestroy() {
         viewModel.curPlayingDua = null
         viewModel.playbackState = null
-
+        if (playbackState?.isPlaying == false)
+            curPlayingSong?.let {
+                viewModel.playOrToggleDua(it, connection!!, true)
+            }
         MusicService.notificationManager?.let {
             it.musicService.apply {
                 stopForeground(true)
                 isForegroundService = false
                 stopSelf()
                 exoPlayer.stop()
-                this.onDestroy()
-                MusicService.musicPlayerEventListener = null
-
+                MusicService.isInit = true
             }
         }
         super.onDestroy()

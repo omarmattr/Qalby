@@ -19,57 +19,41 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 
 @AndroidEntryPoint
-class DuaFragment : Fragment() {
+class DuaFragment : Fragment(R.layout.fragment_dua) {
 
-
-    private val mBinding by lazy {
-        FragmentDuaBinding.inflate(layoutInflater)
-    }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = mBinding.root
+    private lateinit var mBinding: FragmentDuaBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        initViewPage()
+        mBinding = FragmentDuaBinding.bind(view)
+        initViewPage()
     }
 
-    override fun onResume() {
-        super.onResume()
-        initViewPage()
-        Log.e("tttttttttt","OnResume")
-    }
 
     private fun initViewPage() {
-        val viewPagerAdapter = ViewPagerAdapter(requireActivity().supportFragmentManager)
-        val listDuaFragment = ListDuaFragment()
-        viewPagerAdapter.addFragment(listDuaFragment, "Dua")
-//        viewPagerAdapter.addFragment(DuaDetailsFragment(), "Saved")
+        val viewPagerAdapter =ViewPagerAdapter(requireActivity())
+        viewPagerAdapter.addFragment(ListDuaFragment(), "Dua")
+
         viewPagerAdapter.addFragment(ListDuaFragment(), "Hifz")
         mBinding.viewPager.adapter = viewPagerAdapter
-        mBinding.tableLayout.setupWithViewPager(mBinding.viewPager)
-//        TabLayoutMediator(
-//            mBinding.tableLayout, mBinding.viewPager
-//        ) { tab: TabLayout.Tab, position: Int ->
-//            when (position) {
-//                0 -> {
-//                    tab.text = "Songs"
-//                }
-//                1 -> {
-//                    tab.text = "Album"
-//                }
-//                2 -> {
-//                    tab.text = "Album"
-//                }
-//            }
-//        }.attach()
+
+        TabLayoutMediator(
+            mBinding.tableLayout, mBinding.viewPager
+        ) { tab: TabLayout.Tab, position: Int ->
+            when (position) {
+                0 -> {
+                    tab.text = "Dua"
+                }
+                1 -> {
+                    tab.text = "Saved"
+                }
+                2 -> {
+                    tab.text = "Hifz"
+                }
+            }
+        }.attach()
 
     }
-
-
 
 
 }

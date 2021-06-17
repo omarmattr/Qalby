@@ -14,13 +14,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MusicSource  constructor(
+class MusicSource constructor(
     var getAllDua: ArrayList<DuaRequestItem>
 ) {
 
     var duaList = emptyList<MediaMetadataCompat>()
 
-    suspend fun fetchMediaData() = withContext(Dispatchers.IO) {
+    suspend fun fetchMediaData(onComplete:()->Unit) = withContext(Dispatchers.IO) {
+        duaList = emptyList()
         state = State.STATE_INITIALIZING
         val allDua = getAllDua
         duaList = allDua.map { dua ->
@@ -45,6 +46,9 @@ class MusicSource  constructor(
                 .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, dua.translation)
                 .build()
         }
+        onComplete()
+        Log.e("ttttttttttt", duaList.toString())
+
         state = State.STATE_INITIALIZED
     }
 
@@ -74,18 +78,18 @@ class MusicSource  constructor(
     private val onReadyListeners = mutableListOf<(Boolean) -> Unit>()
 
     private var state: State = State.STATE_CREATED
-    set(value) {
-        if (value == State.STATE_INITIALIZED || value == State.STATE_ERROR) {
-            synchronized(onReadyListeners) {
-                field = value
-                onReadyListeners.forEach { listener ->
-                    listener(state == State.STATE_INITIALIZED)
+        set(value) {
+            if (value == State.STATE_INITIALIZED || value == State.STATE_ERROR) {
+                synchronized(onReadyListeners) {
+                    field = value
+                    onReadyListeners.forEach { listener ->
+                        listener(state == State.STATE_INITIALIZED)
+                    }
                 }
+            } else {
+                field = value
             }
-        } else {
-            field = value
         }
-    }
 
     fun whenReady(action: (Boolean) -> Unit): Boolean {
         if (state == State.STATE_CREATED || state == State.STATE_INITIALIZING) {

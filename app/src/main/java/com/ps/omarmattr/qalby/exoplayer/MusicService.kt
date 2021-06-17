@@ -41,12 +41,12 @@ class MusicService : MediaBrowserServiceCompat() {
 
     @Inject
     lateinit var repository: DuaRepository
-    private var musicSource: MusicSource? = null
+    var musicSource: MusicSource? = null
 
     private lateinit var musicNotificationManager: MusicNotificationManager
 
     private val serviceJob = Job()
-    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
+    val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
     private var mediaSession: MediaSessionCompat? = null
     private lateinit var mediaSessionConnector: MediaSessionConnector
@@ -73,9 +73,8 @@ class MusicService : MediaBrowserServiceCompat() {
     override fun onCreate() {
         super.onCreate()
         musicSource = MusicSource(repository.gatAllDua)
-        isInit = true
         serviceScope.launch {
-            musicSource!!.fetchMediaData()
+            musicSource!!.fetchMediaData {}
         }
 
         val activityIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let {
@@ -89,6 +88,10 @@ class MusicService : MediaBrowserServiceCompat() {
 
 
         sessionToken = mediaSession?.sessionToken
+        onBind()
+    }
+
+    fun onBind() {
         notificationManager = MusicPlayerNotificationListener(this)
         musicNotificationManager = MusicNotificationManager(
             this,
@@ -117,6 +120,7 @@ class MusicService : MediaBrowserServiceCompat() {
         musicNotificationManager.showNotification(exoPlayer)
     }
 
+
     private inner class MusicQueueNavigator : TimelineQueueNavigator(mediaSession!!) {
         override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat {
             return musicSource!!.duaList[windowIndex].description
@@ -128,17 +132,23 @@ class MusicService : MediaBrowserServiceCompat() {
         itemToPlay: MediaMetadataCompat?,
         playNow: Boolean
     ) {
-        Log.e("tttttPreper", duaList.toString())
-        if (!isInit) {
-            onCreate()
-            isInit = true
-            Log.e("ttttttttt", "isInit")
+        if (isInit) {
+            musicSource!!.duaList = emptyList()
+            musicSource = MusicSource(repository.gatAllDua)
+            serviceScope.launch {
+                musicSource!!.fetchMediaData {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        onBind()
+                    }
+                }
+            }
+
+            isInit = false
         }
         val curSongIndex = if (curPlayingSong == null) 0 else duaList.indexOf(itemToPlay)
 
         exoPlayer.prepare(musicSource!!.asMediaSource(dataSourceFactory))
         exoPlayer.seekTo(curSongIndex, 0L)
-        Log.e("tttttPreper", exoPlayer.toString())
         exoPlayer.playWhenReady = playNow
     }
 
@@ -152,8 +162,6 @@ class MusicService : MediaBrowserServiceCompat() {
         serviceScope.cancel()
         exoPlayer.removeListener(musicPlayerEventListener!!)
         exoPlayer.release()
-        isInit = false
-        mediaSession = null
     }
 
     override fun onGetRoot(
