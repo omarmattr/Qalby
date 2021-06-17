@@ -18,6 +18,7 @@ import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.EasyWayLocation.LOCATION_SETTING_REQUEST_CODE
 import com.example.easywaylocation.Listener
 import com.google.android.gms.location.LocationRequest
+import com.google.gson.Gson
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -26,7 +27,11 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.databinding.ActivityMainBinding
+import com.ps.omarmattr.qalby.model.SLocation
+import com.ps.omarmattr.qalby.other.PREFERENCES_IS_LOCATION
+import com.ps.omarmattr.qalby.other.PREFERENCES_LOCATION
 import com.ps.omarmattr.qalby.ui.viewmodel.MainViewModel
+import com.ps.omarmattr.qalby.util.PreferencesManager
 import com.ps.omarmattr.qalby.util.ResultRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -44,10 +49,12 @@ class MainActivity : AppCompatActivity(), Listener {
 
     @Inject
     lateinit var viewModel: MainViewModel
+    private lateinit var preferencesManager: PreferencesManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preferencesManager = PreferencesManager(this)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
@@ -118,6 +125,8 @@ class MainActivity : AppCompatActivity(), Listener {
                 )
             )
         }
+        val sLocation = Gson().toJson(SLocation(location.latitude, location.longitude))
+        preferencesManager.editor.putString(PREFERENCES_LOCATION, sLocation).apply()
     }
 
     override fun locationCancelled() {
@@ -146,17 +155,40 @@ class MainActivity : AppCompatActivity(), Listener {
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
                     if (p0!!.isPermanentlyDenied) Log.e("ooooooo", "onPermissionDenied")
 
-                    LocationRequest.create().apply {
-                        interval = 10000
-                        priority = LocationRequest.PRIORITY_LOW_POWER
-                    }.also {
-                        easyWayLocation =
-                            EasyWayLocation(
-                                this@MainActivity, it, true,
-                                false, this@MainActivity
-                            )
-                    }
-                    easyWayLocation!!.startLocation()
+                    preferencesManager.sharedPreferences.getBoolean(PREFERENCES_IS_LOCATION, false)
+                        .let {
+                            if (!it) {
+                                LocationRequest.create().apply {
+                                    interval = 10000
+                                    priority = LocationRequest.PRIORITY_LOW_POWER
+                                }.also {
+                                    easyWayLocation =
+                                        EasyWayLocation(
+                                            this@MainActivity, it, true,
+                                            false, this@MainActivity
+                                        )
+                                }
+                                easyWayLocation!!.startLocation()
+                                preferencesManager.editor.putBoolean(PREFERENCES_IS_LOCATION, true)
+                                    .apply()
+                            } else {
+                                preferencesManager.sharedPreferences.getString(
+                                    PREFERENCES_LOCATION,
+                                    null
+                                )?.let { sl ->
+                                    val location = Gson().fromJson(sl, SLocation::class.java)
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        viewModel.locationLiveData.emit(
+                                            ResultRequest.success(
+                                                location.lat,
+                                                location.lng.toString()
+                                            )
+                                        )
+                                    }
+                                }
+
+                            }
+                        }
                 }
 
                 override fun onPermissionRationaleShouldBeShown(

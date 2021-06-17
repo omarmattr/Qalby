@@ -13,9 +13,13 @@ import com.ps.omarmattr.qalby.model.home.social.Social
 import com.ps.omarmattr.qalby.model.solahTime.SendParam
 import com.ps.omarmattr.qalby.model.solahTime.SolahTime
 import com.ps.omarmattr.qalby.other.FunctionConstant.addSolah
+import com.ps.omarmattr.qalby.other.PREFERENCES_ADDRESS
+import com.ps.omarmattr.qalby.other.PREFERENCES_ADDRESS_NAME
+import com.ps.omarmattr.qalby.other.PREFERENCES_METHOD
 import com.ps.omarmattr.qalby.ui.viewmodel.HomeViewModel
 import com.ps.omarmattr.qalby.ui.viewmodel.MainViewModel
 import com.ps.omarmattr.qalby.ui.viewmodel.SolahViewModel
+import com.ps.omarmattr.qalby.util.PreferencesManager
 import com.ps.omarmattr.qalby.util.ResultRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -44,6 +48,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
     private val mAdapter by lazy {
         HomeAdapter(arrayListOf(), this)
     }
+    private lateinit var preferencesManager: PreferencesManager
 
 
     override fun onCreateView(
@@ -54,6 +59,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        preferencesManager = PreferencesManager(requireContext())
+
         homeViewModel.getSocial()
         val cal = Calendar.getInstance()
         mBinding.rcHome.apply {
@@ -66,16 +73,68 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
                         ResultRequest.Status.EMPTY -> {
                         }
                         ResultRequest.Status.SUCCESS -> {
-
-                            viewModel.getSolahWithLatLog(
-                                SendParam(
-                                    latitude = it.data.toString().toDouble(),
-                                    longitude = it.message!!.toDouble(),
-                                    method = 3,
-                                    month = cal.get(Calendar.MONTH) + 1,
-                                    year = cal.get(Calendar.YEAR)
-                                )
+                            preferencesManager.sharedPreferences.getBoolean(
+                                PREFERENCES_ADDRESS,
+                                false
                             )
+                                .let { b ->
+                                    if (!b) {
+                                        viewModel.getSolahWithLatLog(
+                                            SendParam(
+                                                latitude = it.data.toString().toDouble(),
+                                                longitude = it.message!!.toDouble(),
+                                                method = preferencesManager.sharedPreferences.getInt(
+                                                    PREFERENCES_METHOD,
+                                                    3
+                                                ),
+                                                month = cal.get(Calendar.MONTH) + 1,
+                                                year = cal.get(Calendar.YEAR)
+                                            )
+                                        )
+                                    } else {
+                                        preferencesManager.sharedPreferences.getString(
+                                            PREFERENCES_ADDRESS_NAME,
+                                            null
+                                        )?.let { name ->
+
+                                            viewModel.getSolahWithAddress(
+                                                SendParam(
+                                                    latitude = it.data.toString().toDouble(),
+                                                    longitude = it.message!!.toDouble(),
+                                                    method = preferencesManager.sharedPreferences.getInt(
+                                                        PREFERENCES_METHOD,
+                                                        3
+                                                    ),
+                                                    month = cal.get(Calendar.MONTH) + 1,
+                                                    year = cal.get(Calendar.YEAR)
+                                                ), name
+                                            )
+                                        }
+                                    }
+                                }
+
+
+                        }
+                        ResultRequest.Status.LOADING -> {
+                        }
+                        ResultRequest.Status.ERROR -> {
+                        }
+                    }
+                }
+            }
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getNextTimeLiveData.collect {
+                withContext(Dispatchers.Main) {
+                    when (it.status) {
+                        ResultRequest.Status.EMPTY -> {
+                            // mBinding.time.nextTime.text = "${it.data}"
+
+                        }
+                        ResultRequest.Status.SUCCESS -> {
+                            val data = it.data as String
+                            mBinding.time.text = data
+
                         }
                         ResultRequest.Status.LOADING -> {
                         }
@@ -84,142 +143,164 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
                     }
                 }
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.getNextTimeLiveData.collect {
-                        withContext(Dispatchers.Main) {
-                            when (it.status) {
-                                ResultRequest.Status.EMPTY -> {
-                                    // mBinding.time.nextTime.text = "${it.data}"
+            }
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            homeViewModel.getSocialLiveData().collect {
+                withContext(Dispatchers.Main) {
+                    when (it.status) {
+                        ResultRequest.Status.EMPTY -> {
+                            // mBinding.time.nextTime.text = "${it.data}"
 
-                                }
-                                ResultRequest.Status.SUCCESS -> {
-                                    val data = it.data as String
-                                    mBinding.time.text = data
-
-                                }
-                                ResultRequest.Status.LOADING -> {
-                                }
-                                ResultRequest.Status.ERROR -> {
-                                }
-                            }
                         }
+                        ResultRequest.Status.SUCCESS -> {
+                            val data = it.data as Social
+                            if (mAdapter.arrayList.size < 2) mAdapter.arrayList.add(
+                                HomeItem(
+                                    name = "Instagram",
+                                    social = data
+                                )
+                            )
+                            mAdapter.notifyDataSetChanged()
+                            mAdapter.notifyDataSetChanged()
 
-                    }
-                }
-                CoroutineScope(Dispatchers.IO).launch {
-                    homeViewModel.getSocialLiveData().collect {
-                        withContext(Dispatchers.Main) {
-                            when (it.status) {
-                                ResultRequest.Status.EMPTY -> {
-                                    // mBinding.time.nextTime.text = "${it.data}"
-
-                                }
-                                ResultRequest.Status.SUCCESS -> {
-                                    val data = it.data as Social
-                                    if (mAdapter.arrayList.size < 2) mAdapter.arrayList.add(
-                                        HomeItem(
-                                            name = "Instagram",
-                                            social = data
-                                        )
-                                    )
-                                    mAdapter.notifyDataSetChanged()
-                                    mAdapter.notifyDataSetChanged()
-
-                                }
-                                ResultRequest.Status.LOADING -> {
-                                }
-                                ResultRequest.Status.ERROR -> {
-                                }
-                            }
                         }
-
-                    }
-                }
-                CoroutineScope(Dispatchers.IO).launch {
-                    homeViewModel.getSocialFacebookLiveData().collect {
-                        withContext(Dispatchers.Main) {
-                            when (it.status) {
-                                ResultRequest.Status.EMPTY -> {
-
-                                }
-                                ResultRequest.Status.SUCCESS -> {
-                                    val dataFace = it.data as Social
-                                    Log.e(
-                                        this.javaClass.name,
-                                        "getSocialFacebookLiveData SUCCESS"
-                                    )
-                                    if (mAdapter.arrayList.size < 2) mAdapter.arrayList.add(
-                                        HomeItem(
-                                            name = "Facebook",
-                                            social = dataFace
-                                        )
-                                    )
-                                    mAdapter.notifyDataSetChanged()
-
-                                }
-                                ResultRequest.Status.LOADING -> {
-                                    Log.e(
-                                        this.javaClass.name,
-                                        "getSocialFacebookLiveData LOADING"
-                                    )
-                                }
-                                ResultRequest.Status.ERROR -> {
-                                    Log.e(
-                                        this.javaClass.name,
-                                        "getSocialFacebookLiveData ${it.message}"
-                                    )
-                                }
-                            }
+                        ResultRequest.Status.LOADING -> {
                         }
-
-                    }
-                }
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.getSolahWithLatLogLiveData.collect {
-                        withContext(Dispatchers.Main) {
-                            when (it.status) {
-                                ResultRequest.Status.EMPTY -> {
-                                }
-                                ResultRequest.Status.SUCCESS -> {
-                                    Log.e(
-                                        this.javaClass.name,
-                                        "getSolahWithLatLogLiveData SUCCESS"
-                                    )
-
-                                    val data = it.data as SolahTime
-                                    data.data.find {
-                                        it.date.gregorian.day.toInt() == cal.get(Calendar.DAY_OF_MONTH)
-                                    }?.let {
-                                        mBinding.txtLocation.text = it.meta.timezone
-                                        viewModel.getNextTime(
-                                            addSolah(
-                                                requireContext(),
-                                                it.timings
-                                            )
-                                        )
-
-                                    }
-
-
-                                }
-                                ResultRequest.Status.LOADING -> {
-                                    Log.e(
-                                        this.javaClass.name,
-                                        "getSolahWithLatLogLiveData LOADING"
-                                    )
-                                }
-                                ResultRequest.Status.ERROR -> {
-                                    Log.e(this.javaClass.name, it.message!!)
-
-                                }
-                            }
+                        ResultRequest.Status.ERROR -> {
                         }
-
                     }
                 }
 
             }
         }
+        CoroutineScope(Dispatchers.IO).launch {
+            homeViewModel.getSocialFacebookLiveData().collect {
+                withContext(Dispatchers.Main) {
+                    when (it.status) {
+                        ResultRequest.Status.EMPTY -> {
+
+                        }
+                        ResultRequest.Status.SUCCESS -> {
+                            val dataFace = it.data as Social
+                            Log.e(
+                                this.javaClass.name,
+                                "getSocialFacebookLiveData SUCCESS"
+                            )
+                            if (mAdapter.arrayList.size < 2) mAdapter.arrayList.add(
+                                HomeItem(
+                                    name = "Facebook",
+                                    social = dataFace
+                                )
+                            )
+                            mAdapter.notifyDataSetChanged()
+
+                        }
+                        ResultRequest.Status.LOADING -> {
+                            Log.e(
+                                this.javaClass.name,
+                                "getSocialFacebookLiveData LOADING"
+                            )
+                        }
+                        ResultRequest.Status.ERROR -> {
+                            Log.e(
+                                this.javaClass.name,
+                                "getSocialFacebookLiveData ${it.message}"
+                            )
+                        }
+                    }
+                }
+
+            }
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getSolahWithLatLogLiveData.collect {
+                withContext(Dispatchers.Main) {
+                    when (it.status) {
+                        ResultRequest.Status.EMPTY -> {
+                        }
+                        ResultRequest.Status.SUCCESS -> {
+                            Log.e(
+                                this.javaClass.name,
+                                "getSolahWithLatLogLiveData SUCCESS"
+                            )
+
+                            val data = it.data as SolahTime
+                            data.data.find {
+                                it.date.gregorian.day.toInt() == cal.get(Calendar.DAY_OF_MONTH)
+                            }?.let {
+                                mBinding.txtLocation.text = it.meta.timezone
+                                viewModel.getNextTime(
+                                    addSolah(
+                                        requireContext(),
+                                        it.timings
+                                    )
+                                )
+
+                            }
+
+
+                        }
+                        ResultRequest.Status.LOADING -> {
+                            Log.e(
+                                this.javaClass.name,
+                                "getSolahWithLatLogLiveData LOADING"
+                            )
+                        }
+                        ResultRequest.Status.ERROR -> {
+                            Log.e(this.javaClass.name, it.message!!)
+
+                        }
+                    }
+                }
+
+            }
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getSolahWithAddressLiveData.collect {
+                withContext(Dispatchers.Main) {
+                    when (it.status) {
+                        ResultRequest.Status.EMPTY -> {
+                        }
+                        ResultRequest.Status.SUCCESS -> {
+                            Log.e(
+                                this.javaClass.name,
+                                "getSolahWithAddressLiveData SUCCESS"
+                            )
+
+                            val data = it.data as SolahTime
+                            data.data.find {
+                                it.date.gregorian.day.toInt() == cal.get(Calendar.DAY_OF_MONTH)
+                            }?.let {
+                                mBinding.txtLocation.text = it.meta.timezone
+                                viewModel.getNextTime(
+                                    addSolah(
+                                        requireContext(),
+                                        it.timings
+                                    )
+                                )
+
+                            }
+
+
+                        }
+                        ResultRequest.Status.LOADING -> {
+                            Log.e(
+                                this.javaClass.name,
+                                "getSolahWithLatLogLiveData LOADING"
+                            )
+                        }
+                        ResultRequest.Status.ERROR -> {
+                            Log.e(this.javaClass.name, it.message!!)
+
+                        }
+                    }
+                }
+
+            }
+        }
+
+
     }
 
     override fun onClick(itemHome: HomeItem) {

@@ -35,7 +35,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
                 tools:listitem="@layout/inner_item_home"
-                android:layout_height="@dimen/_200sdp" />
+                android:layout_height="wrap_content" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>
 </layout>

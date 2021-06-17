@@ -14,6 +14,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.model.solahTime.SolahItem
 import com.ps.omarmattr.qalby.other.BUNDLE_EXTRA
+import com.ps.omarmattr.qalby.other.PREFERENCES_DEFAULT_AZAN
 import com.ps.omarmattr.qalby.other.SOLAH_ITEM_EXTRA
 import com.ps.omarmattr.qalby.ui.activity.MainActivity
 import com.ps.omarmattr.qalby.util.PreferencesManager
@@ -63,7 +64,25 @@ class AlarmReceiver : BroadcastReceiver() {
             .setAutoCancel(true).setContentIntent(pendingIntent)
 
         preferencesManager.sharedPreferences.getInt(solahItem.name, 0).let {
-            if (it != 0) builder.setSound(Uri.parse("android.resource://" + context.packageName + "/" + it))
+            if (it != 0) {
+                builder.setSound(
+                    Uri.parse(
+                        "android.resource://"
+                                + context.packageName + "/" + it
+                    )
+                )
+            } else {
+                preferencesManager.sharedPreferences.getInt(
+                    PREFERENCES_DEFAULT_AZAN, R.raw.daoodsubuhlong
+                ).let { e ->
+                    builder.setSound(
+                        Uri.parse(
+                            "android.resource://" +
+                                    context.packageName + "/" + e
+                        )
+                    )
+                }
+            }
         }
 
         createNotificationChannel(context)

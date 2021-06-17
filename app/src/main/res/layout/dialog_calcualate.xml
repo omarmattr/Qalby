@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/calculation"
+                android:textAlignment="center"
+                android:textSize="@dimen/_18ssp"
+                android:textColor="@color/primary"
+                android:layout_margin="@dimen/_8sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RadioGroup
+                android:id="@+id/rgMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/method0"
+                    android:layout_width="match_parent"
+                    android:text="Shia Ithna-Ansari"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method1"
+                    android:layout_width="match_parent"
+                    android:text="University of Islamic Sciences, Karachi"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method2"
+                    android:layout_width="match_parent"
+                    android:text="Islamic Society of North America"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method3"
+                    android:checked="true"
+                    android:layout_width="match_parent"
+                    android:text="Muslim World League"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method4"
+                    android:layout_width="match_parent"
+                    android:text="Umm Al-Qura University, Makkah"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method5"
+                    android:layout_width="match_parent"
+                    android:text="Egyptian General Authority of Survey"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method7"
+                    android:layout_width="match_parent"
+                    android:text="Institute of Geophysics, University of Tehran"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method8"
+                    android:layout_width="match_parent"
+                    android:text="UAE"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method9"
+                    android:layout_width="match_parent"
+                    android:text="Kuwait"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method10"
+                    android:layout_width="match_parent"
+                    android:text="Qatar"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method11"
+                    android:layout_width="match_parent"
+                    android:text="Singapore"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method12"
+                    android:layout_width="match_parent"
+                    android:text=" Union Organization islamic de France"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method13"
+                    android:layout_width="match_parent"
+                    android:text="moonsighting committee worldwide"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/method14"
+                    android:layout_width="match_parent"
+                    android:text="JAKIM(Jabatan Kemajuan Islam Malaysia)"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </RadioGroup>
+
+            <View
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_50sdp" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

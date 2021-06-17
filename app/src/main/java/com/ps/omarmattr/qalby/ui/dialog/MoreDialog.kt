@@ -10,7 +10,9 @@ import com.ps.omarmattr.qalby.R
 import com.ps.omarmattr.qalby.adapter.GenericAdapter
 import com.ps.omarmattr.qalby.databinding.DialogMoreBinding
 import com.ps.omarmattr.qalby.model.MoreItem
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MoreDialog : BottomSheetDialogFragment() ,GenericAdapter.OnListItemViewClickListener<MoreItem>{
     private val moreArray = arrayListOf(
         MoreItem(name = "Qblah", image = 0),

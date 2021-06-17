@@ -6,6 +6,11 @@
     <data>
 
     </data>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/coordinator"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
@@ -48,19 +53,21 @@
             app:layout_constraintTop_toBottomOf="@+id/setting_lbl" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcSetting"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="700dp"
             android:layout_marginHorizontal="@dimen/_16sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/view2"
             tools:itemCount="5"
-            tools:listitem="@layout/item_solah_setting"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
+            tools:listitem="@layout/item_solah_setting" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>
 
