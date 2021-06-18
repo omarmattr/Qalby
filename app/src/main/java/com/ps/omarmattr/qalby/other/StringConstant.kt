@@ -31,5 +31,7 @@ const val PREFERENCES_METHOD_NAME = "methodName"
 const val PREFERENCES_ADDRESS = "address"
 const val PREFERENCES_ADDRESS_NAME = "addressName"
 const val PREFERENCES_DEFAULT_AZAN = "defaultAzan"
+const val QIBLA_LATITUDE = 21.3891
+const val QIBLA_LONGITUDE = 39.8579
 
 const val TYPE_SOUND = "typeSound"

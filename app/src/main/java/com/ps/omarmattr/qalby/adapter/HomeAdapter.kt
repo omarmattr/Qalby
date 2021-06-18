@@ -53,8 +53,8 @@ class HomeAdapter(var arrayList: ArrayList<HomeItem>, private val click: OnClick
                         }
 
                     })
-                if (position == 1) layoutManager =
-                    LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+//                if (position == 1) layoutManager =
+//                    LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
                 mAdapter.data = arrayList[position].social
                 adapter = mAdapter
             }

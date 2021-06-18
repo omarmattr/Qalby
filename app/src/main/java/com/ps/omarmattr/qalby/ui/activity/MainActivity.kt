@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), Listener {
                         }
                         mBinding.bottomNavigation.visibility = View.GONE
                     }
-                    R.id.destination_home, R.id.destination_bulletin, R.id.destination_dua, R.id.destination_more, R.id.destination_solah -> {
+                    R.id.destination_home, R.id.destination_qibla, R.id.destination_dua, R.id.destination_more, R.id.destination_solah -> {
 
                         window.apply {
                             clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)

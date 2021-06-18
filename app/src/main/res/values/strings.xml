@@ -42,5 +42,6 @@
     <string name="enter_location_name">Enter location name</string>
     <string name="use_my_location">Use my location</string>
     <string name="save">Save</string>
+    <string name="qibla">Qibla</string>
 
 </resources>

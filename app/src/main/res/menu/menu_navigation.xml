@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/destination_bulletin"
-        android:icon="@drawable/selector_bulletin"
-        android:title="@string/bulletin" />
+        android:id="@+id/destination_qibla"
+        android:icon="@drawable/selector_qibla"
+        android:title="@string/qibla" />
 
     <item
         android:id="@+id/destination_solah"

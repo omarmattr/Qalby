@@ -45,10 +45,10 @@
         tools:layout="@layout/dialog_more"
         />
     <fragment
-        android:id="@+id/destination_bulletin"
-        android:name="com.ps.omarmattr.qalby.ui.fragment.BulletinFragment"
+        android:id="@+id/destination_qibla"
+        android:name="com.ps.omarmattr.qalby.ui.fragment.QiblaFragment"
         android:label="fragment_bulletin"
-        tools:layout="@layout/fragment_bulletin"
+        tools:layout="@layout/fragment_qibla"
         />
     <fragment
         android:id="@+id/settingSolahFragment"

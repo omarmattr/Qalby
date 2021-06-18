@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.ps.omarmattr.qalby.adapter.HomeAdapter
 import com.ps.omarmattr.qalby.databinding.FragmentHomeBinding
 import com.ps.omarmattr.qalby.model.home.HomeItem
@@ -22,7 +23,6 @@ import com.ps.omarmattr.qalby.ui.viewmodel.SolahViewModel
 import com.ps.omarmattr.qalby.util.PreferencesManager
 import com.ps.omarmattr.qalby.util.ResultRequest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -66,7 +66,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
         mBinding.rcHome.apply {
             adapter = mAdapter
         }
-        CoroutineScope(Dispatchers.IO).launch {
+
+        lifecycleScope.launch {
             mainViewModel.getLocationLiveData.collect {
                 withContext(Dispatchers.Main) {
                     when (it.status) {
@@ -123,7 +124,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
                 }
             }
         }
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             viewModel.getNextTimeLiveData.collect {
                 withContext(Dispatchers.Main) {
                     when (it.status) {
@@ -145,7 +146,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
 
             }
         }
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             homeViewModel.getSocialLiveData().collect {
                 withContext(Dispatchers.Main) {
                     when (it.status) {
@@ -174,7 +175,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
 
             }
         }
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             homeViewModel.getSocialFacebookLiveData().collect {
                 withContext(Dispatchers.Main) {
                     when (it.status) {
@@ -213,7 +214,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
 
             }
         }
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             viewModel.getSolahWithLatLogLiveData.collect {
                 withContext(Dispatchers.Main) {
                     when (it.status) {
@@ -256,7 +257,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
 
             }
         }
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             viewModel.getSolahWithAddressLiveData.collect {
                 withContext(Dispatchers.Main) {
                     when (it.status) {
