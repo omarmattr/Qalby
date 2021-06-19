@@ -14,3 +14,5 @@ In the application there are prayer times, and the location can be determined ma
 ## 🌟 Features App
 
 ## 🔜 New Features and Bugs will be fixed on the next update (very soon) :
+
+
