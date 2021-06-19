@@ -10,7 +10,18 @@ In the application there are prayer times, and the location can be determined ma
 
 
 ## ✨ Features Project Android:
+- 100% Kotlin
+- Foreground Service (Muisc Notification)
+- Dagger Hilt
+- MVVM architecture
+- Android architecture components
+- Navigation Jetpack
+- Single activity
+- dataBinding
+- Coroutines
+- StateFlow
 
+<!--
 ## 🌟 Features App
 
 ## 🔜 New Features and Bugs will be fixed on the next update (very soon) :
