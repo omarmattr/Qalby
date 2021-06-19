@@ -21,6 +21,24 @@ In the application there are prayer times, and the location can be determined ma
 - Coroutines
 - StateFlow
 
+## 🌟 Features App
+- Get prayer time in the user chosen calculation method.
+- Get guideline towards the Kaaba by qibla compass.
+- Determine the location of prayer times or through GPS
+- Contains text and audio supplications (male or female)
+- Music Controler Notification 
+- Prayer time reminder and set the azan for you prayer 
+
+
+## 🔜 New Features and Bugs will be fixed on the next update (very soon) :
+- Morning&Evening Remembrance
+- Remembrance
+- Names of Allah
+- Islamic Wallpapers
+- Read Quran verses meanings in 18 different languages.
+- Read Quran with Arabic script.
+- Change anytime application language.
+
 ## License
     Copyright 2021 Omar Mattr
 
@@ -35,10 +53,4 @@ In the application there are prayer times, and the location can be determined ma
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-<!--
-## 🌟 Features App
-
-## 🔜 New Features and Bugs will be fixed on the next update (very soon) :
-
 
