@@ -35,7 +35,6 @@ In the application there are prayer times, and the location can be determined ma
 - Remembrance
 - Names of Allah
 - Islamic Wallpapers
-- Read Quran verses meanings in 18 different languages.
 - Read Quran with Arabic script.
 - Change anytime application language.
 
