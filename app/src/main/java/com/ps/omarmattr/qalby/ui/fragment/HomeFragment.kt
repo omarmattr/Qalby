@@ -13,9 +13,8 @@ import com.ps.omarmattr.qalby.model.home.HomeItem
 import com.ps.omarmattr.qalby.model.home.social.Social
 import com.ps.omarmattr.qalby.model.solahTime.SendParam
 import com.ps.omarmattr.qalby.model.solahTime.SolahTime
-import com.ps.omarmattr.qalby.other.FunctionConstant.addSolah
 import com.ps.omarmattr.qalby.other.PREFERENCES_ADDRESS
-import com.ps.omarmattr.qalby.other.PREFERENCES_ADDRESS_NAME
+import com.ps.omarmattr.qalby.other.*
 import com.ps.omarmattr.qalby.other.PREFERENCES_METHOD
 import com.ps.omarmattr.qalby.ui.viewmodel.HomeViewModel
 import com.ps.omarmattr.qalby.ui.viewmodel.MainViewModel
@@ -31,10 +30,11 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
+class HomeFragment : Fragment(), HomeAdapter.OnClickHome{
     private val mBinding by lazy {
         FragmentHomeBinding.inflate(layoutInflater)
     }
+
 
 
     @Inject
@@ -232,7 +232,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
                             }?.let {
                                 mBinding.txtLocation.text = it.meta.timezone
                                 viewModel.getNextTime(
-                                    addSolah(
+                                    FunctionConstant.addSolah(
                                         requireContext(),
                                         it.timings
                                     )
@@ -275,7 +275,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
                             }?.let {
                                 mBinding.txtLocation.text = it.meta.timezone
                                 viewModel.getNextTime(
-                                    addSolah(
+                                    FunctionConstant.addSolah(
                                         requireContext(),
                                         it.timings
                                     )
@@ -303,6 +303,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnClickHome {
 
 
     }
+
+
 
     override fun onClick(itemHome: HomeItem) {
     }

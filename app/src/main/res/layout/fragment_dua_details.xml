@@ -264,9 +264,11 @@
 
 
         <ImageView
+            android:visibility="gone"
+            android:id="@+id/btnRepeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_repeat"
+            android:src="@drawable/ic_not_repeat"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
             app:layout_constraintEnd_toEndOf="@+id/total_time"
             app:layout_constraintTop_toTopOf="@+id/btnPlay"

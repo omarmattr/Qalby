@@ -39,42 +39,63 @@
 
 
 
+<!--        <ImageView-->
+<!--            android:layout_width="@dimen/_70sdp"-->
+<!--            android:layout_height="@dimen/_70sdp"-->
+<!--            android:layout_marginVertical="@dimen/_24sdp"-->
+<!--            android:layout_marginBottom="@dimen/_20sdp"-->
+<!--            android:src="@drawable/ic_kaaba"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/imageView6"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/ivQiblaDirection"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="200dp"-->
+<!--            android:src="@drawable/ic_compass_in"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            tools:ignore="ContentDescription"-->
+<!--            app:tint="@color/black" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView6"-->
+<!--            android:layout_width="@dimen/_220sdp"-->
+<!--            android:layout_height="@dimen/_220sdp"-->
+<!--            android:src="@drawable/ic_compass_out"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:tint="@color/black"-->
+<!--            tools:ignore="ContentDescription" />-->
+
+
         <ImageView
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
-            android:layout_marginVertical="@dimen/_24sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:src="@drawable/ic_kaaba"
-            app:layout_constraintBottom_toTopOf="@+id/imageView6"
+            android:id="@+id/main_image_dial"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/dial"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivQiblaDirection"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/ic_compass_in"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:ignore="ContentDescription"
-            app:tint="@color/black" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="@dimen/_220sdp"
-            android:layout_height="@dimen/_220sdp"
-            android:src="@drawable/ic_compass_out"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/black"
-            tools:ignore="ContentDescription" />
-
-
-
+            android:layout_width="37dp"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/qibla_arrow"
+            app:layout_constraintBottom_toBottomOf="@+id/main_image_dial"
+            app:layout_constraintEnd_toEndOf="@+id/main_image_dial"
+            app:layout_constraintStart_toStartOf="@+id/main_image_dial"
+            app:layout_constraintTop_toTopOf="@+id/main_image_dial" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

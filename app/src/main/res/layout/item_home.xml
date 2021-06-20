@@ -4,17 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="itemHome"
             type="com.ps.omarmattr.qalby.model.home.HomeItem" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
+        <import type="androidx.recyclerview.widget.LinearLayoutManager" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/_8sdp"
         app:cardCornerRadius="@dimen/_4sdp"
-        app:cardElevation="@dimen/_4sdp"
-        android:layout_height="wrap_content">
+        app:cardElevation="@dimen/_4sdp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -23,19 +30,19 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_marginVertical="@dimen/_8sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_8sdp"
                 android:text="@{itemHome.name}"
                 android:textSize="@dimen/_16ssp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcInnerHome"
                 android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                tools:listitem="@layout/inner_item_home"
-                android:layout_height="wrap_content" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/inner_item_home" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>
 </layout>

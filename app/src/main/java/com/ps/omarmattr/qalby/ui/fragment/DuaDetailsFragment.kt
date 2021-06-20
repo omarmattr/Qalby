@@ -63,10 +63,12 @@ class DuaDetailsFragment : Fragment(), GenericAdapter.OnListItemViewClickListene
     private var connection: MusicServiceConnection? = null
 
     private lateinit var dua: Dua
+    private var position = 0
 
     private var shouldUpdateSeekbar = true
     private var isLoading = false
     private var isPlay = false
+    private var isRepeat = false
 
     var dataList: List<DuaRequestItem>? = null
     override fun onCreateView(
@@ -95,19 +97,30 @@ class DuaDetailsFragment : Fragment(), GenericAdapter.OnListItemViewClickListene
             isPlay = !isPlay
         }
 
+        mBinding.btnRepeat.setOnClickListener {
+            isRepeat = !isRepeat
+            if (isRepeat)
+                mBinding.btnRepeat.setImageResource(R.drawable.ic_repeat)
+            else
+                mBinding.btnRepeat.setImageResource(R.drawable.ic_not_repeat)
+        }
+
 
         mBinding.seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                Log.e("tttttttt", "onProgressChanged")
                 if (fromUser) {
                     setCurPlayerTimeToTextView(progress.toLong())
                 }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                Log.e("tttttttt", "onStartTrackingTouch")
                 shouldUpdateSeekbar = false
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                Log.e("tttttttt", "onStopTrackingTouch")
                 seekBar?.let {
                     shouldUpdateSeekbar = true
                 }
@@ -127,6 +140,7 @@ class DuaDetailsFragment : Fragment(), GenericAdapter.OnListItemViewClickListene
 
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    this@DuaDetailsFragment.position = position
                     if (isPlay) {
                         curPlayingSong?.let {
                             viewModel.playOrToggleDua(it, connection!!, true)
@@ -222,14 +236,28 @@ class DuaDetailsFragment : Fragment(), GenericAdapter.OnListItemViewClickListene
         viewModel.curDuaDuration.observe(viewLifecycleOwner) {
             mBinding.seek.max = it.toInt()
             val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
-            mBinding.totalTime.text = dateFormat.format(it)
+            totalTime = dateFormat.format(it)
+            mBinding.totalTime.text = totalTime
+
         }
     }
 
-
+    var totalTime = ""
     private fun setCurPlayerTimeToTextView(ms: Long) {
         val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
         mBinding.currentTime.text = dateFormat.format(ms)
+        if (mBinding.currentTime.text.toString() == totalTime && totalTime.isNotEmpty()) {
+            Log.e("tttttttttttt", totalTime)
+            totalTime = ""
+            position++
+            mBinding.viewPager.currentItem = position
+            if (isPlay) {
+                curPlayingSong?.let {
+                    viewModel.playOrToggleDua(it, connection!!, true)
+                }
+                isPlay = false
+            }
+        }
     }
 
     override fun onDestroy() {
